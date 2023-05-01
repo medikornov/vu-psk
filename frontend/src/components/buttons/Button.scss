@@ -1,0 +1,10 @@
+.button {
+   padding-right: 5px;
+   padding-left: 5px;
+
+   .btn-primary {
+      --bs-btn-active-bg: none;
+      --bs-btn-bg: none;
+      --bs-btn-hover-bg: none;
+   }
+}
