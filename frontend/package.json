@@ -11,8 +11,11 @@
   "author": "Kibirai v3",
   "license": "MIT",
   "dependencies": {
+    "bootstrap": "^5.2.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-bootstrap": "^2.7.4",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.8.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.31",
@@ -20,6 +23,8 @@
     "css-loader": "^6.7.3",
     "html-webpack-plugin": "^5.5.0",
     "mini-css-extract-plugin": "^2.7.5",
+    "sass": "^1.62.1",
+    "sass-loader": "^13.2.2",
     "ts-loader": "^9.4.2",
     "typescript": "^5.0.3",
     "webpack": "^5.77.0",
