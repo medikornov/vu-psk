@@ -20,7 +20,7 @@ namespace DataAccessLayer.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlServer(_configuration.GetConnectionString("FlowersApiDatabase"), b => b.MigrationsAssembly("DataAccessLayer"));
+            options.UseSqlServer(_configuration.GetConnectionString("FlowersApiDatabase"), b => b.MigrationsAssembly("FlowersApi"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
