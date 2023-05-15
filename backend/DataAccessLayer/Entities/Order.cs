@@ -11,6 +11,7 @@ namespace DataAccessLayer.Entities
         public Customer? Customer { get; set; }
         public DateTime? CreationTime { get; set; }
         public OrderStatus? Status { get; set; }
+        public decimal? OrderTotal { get; set; }
         public List<OrderItem>? OrderItems { get; set; }
     }
 }

@@ -6,6 +6,7 @@ namespace DataAccessLayer.Entities
     {
         [Key]
         public Guid CustomerId { get; set; }
+        public DateTime? CreationTime { get; set; }
         public string? UserName { get; set; }
         public string? Password { get; set; }
         public string? FirstName { get; set; }
@@ -13,6 +14,6 @@ namespace DataAccessLayer.Entities
         public string? Email { get; set; }
         public string? Phone { get; set; }
         public string? Address { get; set; }
-        public DateTime? CreationTime { get; set; }
+        public string? AuthZeroUserId { get; set; }
     }
 }
