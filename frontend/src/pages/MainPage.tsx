@@ -7,14 +7,16 @@ const temporaryTitleText = "Flowers for individual wishes";
 
 export const MainPage = () => {
     return (
-        <div className="main-page">
-            <Header />
-            <div className="main-page-body">
-                <div className="main-page-body-text">
-                    <div className="main-page-body-text-title">{temporaryTitleText}</div>
-                    <div className="main-page-body-text-about">{temporaryAboutText}</div>
+        <div className='global'>
+            <div className="main-page">
+                <Header />
+                <div className="main-page-body">
+                    <div className="main-page-body-text">
+                        <div className="main-page-body-text-title">{temporaryTitleText}</div>
+                        <div className="main-page-body-text-about">{temporaryAboutText}</div>
+                    </div>
+                    <div className="main-page-body-image"><img src={'./yesterday.png'} alt="yesterday" /></div>
                 </div>
-                <div className="main-page-body-image"><img src={'./yesterday.png'} alt="yesterday" /></div>
             </div>
         </div>
     );
