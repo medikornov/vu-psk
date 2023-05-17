@@ -6,11 +6,12 @@ import { AboutPage } from "./pages/AboutPage";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { LoginPage } from "./pages/LoginPage";
 import { FlowersPage } from "./pages/FlowersPage";
+import { FlowersApiProvider } from "./clients/FlowersApiProvider";
 
-const domain = "dev-flowers.eu.auth0.com";
-const clientId = "vu14AdpGBwaVYdq1fbBAvep3K9gxrLuu";
+const domain = process.env.AUTHZERO_DOMAIN ?? "";
+const clientId = process.env.AUTHZERO_CLIENTID ?? "";
 
-const Auth0Context = ({ children }: { children: React.ReactElement; }) => {
+const Auth0ContextProvider = ({ children }: { children: React.ReactElement; }) => {
    return (
       <Auth0Provider
          domain={domain}
@@ -26,15 +27,17 @@ const Auth0Context = ({ children }: { children: React.ReactElement; }) => {
 
 export const App = () => {
    return (
-      <Auth0Context>
-         <BrowserRouter>
-            <Routes>
-               <Route path="/" element={<MainPage />} />
-               <Route path="/about" element={<AboutPage />} />
-               <Route path="/login" element={<LoginPage />} />
-               <Route path="/flowers" element={<FlowersPage />} />
-            </Routes>
-         </BrowserRouter>
-      </Auth0Context>
+      <Auth0ContextProvider>
+         <FlowersApiProvider>
+            <BrowserRouter>
+               <Routes>
+                  <Route path="/" element={<MainPage />} />
+                  <Route path="/about" element={<AboutPage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/flowers" element={<FlowersPage />} />
+               </Routes>
+            </BrowserRouter>
+         </FlowersApiProvider>
+      </Auth0ContextProvider>
    );
 };
