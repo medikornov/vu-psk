@@ -35,4 +35,8 @@ export default class FlowersApiClient {
     public async getAllItems() {
         return axios.get<ApiResponse<Item[]>>(this.baseUrl + "/api/items");
     }
+
+    public async getItem(id: string) {
+        return axios.get<ApiResponse<Item>>(this.baseUrl + "/api/items/" + id);
+    }
 }

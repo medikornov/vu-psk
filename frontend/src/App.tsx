@@ -7,6 +7,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import { LoginPage } from "./pages/LoginPage";
 import { FlowersPage } from "./pages/FlowersPage";
 import { FlowersApiProvider } from "./clients/FlowersApiProvider";
+import { FlowerDetailsPage } from "./pages/FlowerDetailsPage";
 
 const domain = process.env.AUTHZERO_DOMAIN ?? "";
 const clientId = process.env.AUTHZERO_CLIENTID ?? "";
@@ -35,6 +36,7 @@ export const App = () => {
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/flowers" element={<FlowersPage />} />
+                  <Route path="/flowers/:id" element={<FlowerDetailsPage />} />
                </Routes>
             </BrowserRouter>
          </FlowersApiProvider>

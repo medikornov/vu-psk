@@ -22,7 +22,7 @@ export const FlowersPage = () => {
                     </div>
                     <div className="flowers-page-cards">
                         {items.map(item => {
-                            return <ItemCard title={item.name} description={item.description} />;
+                            return <ItemCard {...item} />;
                         })}
                     </div>
                     <div className="flowers-page-body-image"><img src={'./yesterday.png'} alt="yesterday" /></div>
