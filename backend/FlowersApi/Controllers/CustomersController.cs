@@ -1,6 +1,7 @@
 ﻿using FlowersApi.Models.Customer;
 using FlowersApi.Services.CustomerService;
 using FlowersApi.Wrappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlowersApi.Controllers
@@ -18,6 +19,7 @@ namespace FlowersApi.Controllers
             _logger = logger;
         }
 
+        [Authorize]
         [HttpGet("{customerId}")]
         [ProducesResponseType(typeof(Response<CustomerResponseDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByIdAsync([FromRoute] Guid customerId)
@@ -34,6 +36,7 @@ namespace FlowersApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("auth0/{authZeroUserId}")]
         [ProducesResponseType(typeof(Response<CustomerResponseDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetByAuthZeroUserIdAsync([FromRoute] string authZeroUserId)
@@ -50,6 +53,7 @@ namespace FlowersApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost]
         [ProducesResponseType(typeof(Response<CustomerResponseDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateAsync([FromBody] CreateCustomerDto dto)
@@ -66,6 +70,7 @@ namespace FlowersApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut("{customerId}")]
         [ProducesResponseType(typeof(Response<CustomerResponseDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateAsync([FromRoute] Guid customerId, [FromBody] UpdateCustomerDto dto)
@@ -82,6 +87,7 @@ namespace FlowersApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{customerId}")]
         public async Task<IActionResult> DeleteAsync([FromRoute] Guid customerId)
         {
