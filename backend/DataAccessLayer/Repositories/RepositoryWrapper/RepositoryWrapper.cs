@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Context;
+using DataAccessLayer.Repositories.CustomerRepository;
 using DataAccessLayer.Repositories.ItemRepository;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -8,6 +9,7 @@ namespace DataAccessLayer.Repositories.RepositoryWrapper
     {
         private readonly DataContext _context;
         private IItemRepository? _item;
+        private ICustomerRepository? _customer;
 
         public RepositoryWrapper(DataContext context)
         {
@@ -24,6 +26,19 @@ namespace DataAccessLayer.Repositories.RepositoryWrapper
                 }
 
                 return _item;
+            }
+        }
+
+        public ICustomerRepository Customers
+        {
+            get
+            {
+                  if (_customer == null)
+                {
+                    _customer = new CustomerRepository.CustomerRepository(_context);
+                }
+
+                return _customer;
             }
         }
 

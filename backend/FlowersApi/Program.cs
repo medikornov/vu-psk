@@ -1,6 +1,7 @@
 using DataAccessLayer.Context;
 using DataAccessLayer.Repositories.RepositoryWrapper;
 using FlowersApi.Helpers;
+using FlowersApi.Services.CustomerService;
 using FlowersApi.Services.ItemService;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -24,6 +25,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     // configure DI for application services
     services.AddScoped<IItemService, ItemService>();
+    services.AddScoped<ICustomerService, CustomerService>();
     services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 }
 
