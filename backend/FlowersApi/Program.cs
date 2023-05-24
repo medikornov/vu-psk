@@ -1,8 +1,11 @@
 using DataAccessLayer.Context;
 using DataAccessLayer.Repositories.RepositoryWrapper;
 using FlowersApi.Helpers;
+using FlowersApi.Services.CustomerService;
 using FlowersApi.Services.ItemService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,10 +23,46 @@ var builder = WebApplication.CreateBuilder(args);
     });
     services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
     services.AddEndpointsApiExplorer();
-    services.AddSwaggerGen();
+
+    services.AddSwaggerGen(c =>
+    {
+        c.SwaggerDoc("v1", new() { Title = "Flowers Api", Version = "v1" });
+        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        {
+            Name = "Authorization",
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.ApiKey,
+            Scheme = "Bearer"
+        });
+        c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Id = "Bearer",
+                        Type = ReferenceType.SecurityScheme
+                    },
+                    Scheme = "oauth2",
+                    Name = "Bearer",
+                    In = ParameterLocation.Header
+                },
+                Array.Empty<string>()
+            }
+        });
+    });
+
+    services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+            options.Authority = $"https://{builder.Configuration["Auth0:Domain"]}/";
+            options.Audience = builder.Configuration["Auth0:Audience"];
+        });
 
     // configure DI for application services
     services.AddScoped<IItemService, ItemService>();
+    services.AddScoped<ICustomerService, CustomerService>();
     services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 }
 
@@ -51,6 +90,10 @@ using (var scope = app.Services.CreateScope())
 
     // global error handler
     app.UseMiddleware<ErrorHandlerMiddleware>();
+
+    app.UseAuthentication();
+
+    app.UseAuthorization();
 
     app.MapControllers();
 }
