@@ -6,19 +6,26 @@ import "./Card.scss";
 interface ItemCard {
     title: string;
     description: string;
+    quantity: number;
 }
 
-export const ItemCard = ({ title, description }: ItemCard) => {
+export const ItemCard = ({ title, description, quantity }: ItemCard) => {
     return (
-        <Card style={{ width: '18rem' }}>
+        <div className="flower-card-container">
+            <Card style={{ width: '18rem', backgroundColor: '#232323' }}>
+                <Card.Text className="quantity-text">
+                    <span>{"Sale: "}</span>
+                    <span className="quantity-number">{quantity}</span>
+                </Card.Text>
             <Card.Img variant="top" src="./yesterday.png" />
             <Card.Body>
-                <Card.Title>{title}</Card.Title>
-                <Card.Text>
+                <Card.Title className="card-title">{title}</Card.Title>
+                <Card.Text className="card-description">
                     {description}
                 </Card.Text>
-                <Button text="Add To Cart" />
+                    <Button text={"Add To Cart"} className="btn-add-to-cart" />
             </Card.Body>
-        </Card>
+            </Card>
+        </div>
     );
 };

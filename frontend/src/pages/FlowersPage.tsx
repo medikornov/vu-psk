@@ -13,21 +13,21 @@ export const FlowersPage = () => {
     }, [flowersApiClient]);
 
     return (
-        <div className='global'>
             <div className="flowers-page">
                 <Header />
                 <div className="flowers-page-body">
                     <div className="flowers-page-body-text">
-                        List of flowers
+                        Flowers
                     </div>
                     <div className="flowers-page-cards">
-                        {items.map(item => {
-                            return <ItemCard title={item.name} description={item.description} />;
-                        })}
+                    {items.map(item => {
+                        return <ItemCard title={item.name} description={item.description} quantity={item.quantity} />;
+                    })}
+                    <ItemCard title='Test Test' description='Test Test Test Test Test Test Test Test Test Test Test' quantity={300} />;
+                    <ItemCard title='Test Test' description='Test Test Test Test Test Test Test Test Test Test Test' quantity={300} />;
                     </div>
-                    <div className="flowers-page-body-image"><img src={'./yesterday.png'} alt="yesterday" /></div>
+                    </div>
                 </div>
-            </div>
-        </div>
+            
     );
 };
