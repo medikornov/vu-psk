@@ -3,6 +3,8 @@ using DataAccessLayer.Repositories.RepositoryWrapper;
 using FlowersApi.Helpers;
 using FlowersApi.Services.CustomerService;
 using FlowersApi.Services.ItemService;
+using FlowersApi.Services.OrderItemService;
+using FlowersApi.Services.OrderService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -63,6 +65,8 @@ var builder = WebApplication.CreateBuilder(args);
     // configure DI for application services
     services.AddScoped<IItemService, ItemService>();
     services.AddScoped<ICustomerService, CustomerService>();
+    services.AddScoped<IOrderService, OrderService>();
+    services.AddScoped<IOrderItemService, OrderItemService>();
     services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 }
 

@@ -1,5 +1,5 @@
 ﻿using DataAccessLayer.Helpers;
-using FlowersApi.Models.Item;
+using FlowersApi.Models.ItemDtos;
 using FlowersApi.Services.ItemService;
 using FlowersApi.Wrappers;
 using Microsoft.AspNetCore.Mvc;

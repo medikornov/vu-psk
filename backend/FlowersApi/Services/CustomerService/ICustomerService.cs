@@ -1,4 +1,4 @@
-﻿using FlowersApi.Models.Customer;
+﻿using FlowersApi.Models.CustomerDtos;
 
 namespace FlowersApi.Services.CustomerService
 {
