@@ -4,13 +4,55 @@
             display: inline-block;
             width: 55%;
             color: white;
-            text-align: center;
+            text-align: justify;
             display: inline-block;
             width: 100%;
+            padding-left: 50px;
         }
-        .about-page-body-image {
+
+        .about-page-body-text-title {
+            color: white;
+            font-size: 32px;
+            text-align: justify;
+            padding-top: 50px;
             display: inline-block;
-            width: fit-content;
+            width: 100%;
+            font-family: 'Abel';
+            font-size: 70px;
+        }
+
+        .about-page-body-text-about {
+            color: #e8e8e8;
+            width: 100%;
+            text-align: justify;
+            padding-right: 50px;
+            font-family: 'Abhaya Libre Medium';
+            font-size: 18px;
+        }
+
+        .about-page-body-image {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            display: inline-block;
+            width: 20rem;
+            padding-top: 100px;
+            padding-left: 100px;
+
+
+            .circle-container {
+                width: 225px;
+                height: 225px;
+                border-radius: 50%;
+                overflow: hidden;
+            }
+
+            .circle-image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 50%;
+            }
         }
     }
 }

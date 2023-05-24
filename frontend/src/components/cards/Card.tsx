@@ -12,7 +12,7 @@ interface ItemCard {
 export const ItemCard = ({ title, description, quantity }: ItemCard) => {
     return (
         <div className="flower-card-container">
-            <Card style={{ width: '18rem', backgroundColor: '#232323' }}>
+            <Card className="flower-card">
                 <Card.Text className="quantity-text">
                     <span>{"Sale: "}</span>
                     <span className="quantity-number">{quantity}</span>

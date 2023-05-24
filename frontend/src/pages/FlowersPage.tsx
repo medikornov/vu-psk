@@ -4,6 +4,7 @@ import "./FlowersPage.scss";
 import { ItemCard } from "../components/cards/Card";
 import { useFlowersApiClient } from "../clients/FlowersApiProvider";
 import { Item } from "../clients/FlowersApiClient";
+import { Footer } from "../components/footer/Footer";
 
 export const FlowersPage = () => {
     const flowersApiClient = useFlowersApiClient();
@@ -25,9 +26,15 @@ export const FlowersPage = () => {
                     })}
                     <ItemCard title='Test Test' description='Test Test Test Test Test Test Test Test Test Test Test' quantity={300} />;
                     <ItemCard title='Test Test' description='Test Test Test Test Test Test Test Test Test Test Test' quantity={300} />;
-                    </div>
+                    <ItemCard title='Test Test' description='Test Test Test Test Test Test Test Test Test Test Test' quantity={300} />;
+                    <ItemCard title='Test Test' description='Test Test Test Test Test Test Test Test Test Test Test' quantity={300} />;
+                    <ItemCard title='Test Test' description='Test Test Test Test Test Test Test Test Test Test Test' quantity={300} />;
+                    <ItemCard title='Test Test' description='Test Test Test Test Test Test Test Test Test Test Test' quantity={300} />;
+                    <ItemCard title='Test Test' description='Test Test Test Test Test Test Test Test Test Test Test' quantity={300} />;
                     </div>
                 </div>
+                <Footer/>
+             </div>
             
     );
 };
