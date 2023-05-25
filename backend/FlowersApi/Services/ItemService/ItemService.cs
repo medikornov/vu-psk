@@ -63,6 +63,23 @@ namespace FlowersApi.Services.ItemService
                 // Add new guid
                 item.ItemId = Guid.NewGuid();
 
+                using(var memoryStream = new MemoryStream())
+                {
+                    await dto.Photo.CopyToAsync(memoryStream);
+
+                    // Upload the file if less than 2 MB
+                    if (memoryStream.Length < 2097152)
+                    {
+                        item.PhotoContent = memoryStream.ToArray();
+                        item.PhotoContentType = dto.Photo.ContentType;
+                        item.PhotoName = dto.Photo.FileName;
+                    }
+                    else
+                    {
+                        throw new ApplicationException("The file is too large. Max size is 2 MB.");
+                    }
+                }
+
                 // Save item
                 _repository.Items.Add(item);
                 await _repository.SaveAsync();
@@ -81,6 +98,26 @@ namespace FlowersApi.Services.ItemService
             try
             {
                 var item = await GetItemAsync(itemId);
+
+                if (dto.Photo != null && dto.Photo.Length > 0)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await dto.Photo.CopyToAsync(memoryStream);
+
+                        // Upload the file if less than 2 MB
+                        if (memoryStream.Length < 2097152)
+                        {
+                            item.PhotoContent = memoryStream.ToArray();
+                            item.PhotoContentType = dto.Photo.ContentType;
+                            item.PhotoName = dto.Photo.FileName;
+                        }
+                        else
+                        {
+                            throw new ApplicationException("The file is too large. Max size is 2 MB.");
+                        }
+                    }
+                }
 
                 // Copy dto to item and save
                 _mapper.Map(dto, item);

@@ -12,7 +12,9 @@ namespace DataAccessLayer.Entities
         public decimal? Quantity { get; set; }
         public QuantityType QuantityType { get; set; }
         public decimal? Price { get; set; }
-        public string? PhotoUrl { get; set; }
+        public string? PhotoName { get; set; }
+        public string? PhotoContentType { get; set; }
+        public byte[]? PhotoContent { get; set; }
         public decimal? Weight { get; set; }
     }
 }

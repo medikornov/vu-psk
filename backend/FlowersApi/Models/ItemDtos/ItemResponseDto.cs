@@ -17,7 +17,11 @@ namespace FlowersApi.Models.ItemDtos
 
         public decimal? Price { get; set; }
 
-        public string? PhotoUrl { get; set; }
+        public string? PhotoName { get; set; }
+
+        public string? PhotoContentType { get; set; }
+
+        public byte[]? PhotoContent { get; set; }
 
         public decimal? Weight { get; set; }
     }
