@@ -1,4 +1,4 @@
-﻿namespace FlowersApi.Models.Customer
+﻿namespace FlowersApi.Models.CustomerDtos
 {
     public class CustomerResponseDto
     {

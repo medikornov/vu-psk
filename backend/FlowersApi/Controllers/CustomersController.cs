@@ -1,5 +1,8 @@
-﻿using FlowersApi.Models.Customer;
+﻿using DataAccessLayer.Helpers;
+using FlowersApi.Models.CustomerDtos;
+using FlowersApi.Models.OrderDtos;
 using FlowersApi.Services.CustomerService;
+using FlowersApi.Services.OrderService;
 using FlowersApi.Wrappers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,12 +14,33 @@ namespace FlowersApi.Controllers
     public class CustomersController : ControllerBase
     {
         private readonly ICustomerService _customerService;
+        private readonly IOrderService _orderService;
         private readonly ILogger<CustomersController> _logger;
 
-        public CustomersController(ICustomerService customerService, ILogger<CustomersController> logger)
+        public CustomersController(
+            ICustomerService customerService,
+            IOrderService orderService,
+            ILogger<CustomersController> logger)
         {
             _customerService = customerService;
+            _orderService = orderService;
             _logger = logger;
+        }
+
+        [HttpGet("{customerId}/orders")]
+        [ProducesResponseType(typeof(Response<IEnumerable<OrderResponseDto>>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllOrdersByCustomerIdAsync([FromRoute] Guid customerId, [FromQuery] PaginationFilter filter)
+        {
+            try
+            {
+                var orders = await _orderService.GetAllByCustomerIdAsync(customerId, filter);
+                return Ok(orders);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(650004, ex, "CustomersController GetAllOrdersByCustomerIdAsync caused an exception");
+                throw;
+            }
         }
 
         [Authorize]

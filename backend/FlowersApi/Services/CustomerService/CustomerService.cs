@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DataAccessLayer.Entities;
 using DataAccessLayer.Repositories.RepositoryWrapper;
-using FlowersApi.Models.Customer;
+using FlowersApi.Models.CustomerDtos;
 
 namespace FlowersApi.Services.CustomerService
 {
