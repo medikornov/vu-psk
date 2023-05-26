@@ -1,0 +1,49 @@
+.footer {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-top: 3px solid;
+    border-color: #808088;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(#808088,0.5);
+
+    .footer-logo {
+        display: flex;
+        padding-right: 50px;
+        padding-left: 35px;
+        color: black;
+    }
+
+    .footer-nav-bar {
+        display: flex;
+    }
+
+    .footer-columns {
+        display: flex;
+    }
+
+    .footer-column {
+        margin-right: 100px;
+    }
+
+    .footer-column h3 {
+        font-family: 'Lato';
+        font-size: 13px; 
+        text-transform: uppercase;
+        color: white;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .footer-column p {
+        margin: 4px 0; 
+        color: black;
+        font-size: 14px;
+        font-family: 'Abhaya Libre Medium';
+        text-align: center;
+    }
+}

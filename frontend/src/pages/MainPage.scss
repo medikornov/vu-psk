@@ -1,27 +1,33 @@
-.main-page {
-   .main-page-body {
-      .main-page-body-text {
-         display: inline-block;
-         width: 55%;
-         .main-page-body-text-title {
-            color: white;
-            font-size: 35px;
-            text-align: center;
+.main-page{
+    .main-page-body {
+        .main-page-body-text {
             display: inline-block;
-            width: 100%;
-         }
-         .main-page-body-text-about {
-            color: #e8e8e8;
-            width: 100%;
-            text-align: justify;
+            width: 55%;
+            .main-page-body-text-title {
+                color: white;
+                font-size: 35px;
+                text-align: justify;
+                padding-top: 100px;
+                padding-left: 50px;
+                display: inline-block;
+                width: 100%;
+                font-family: 'Abel';
+                font-size: 70px;
+            }
+            .main-page-body-text-about {
+                color: #e8e8e8;
+                width: 100%;
+                text-align: justify;
+                padding-left: 50px;
+                font-family: 'Abhaya Libre Medium';
+                font-size: 16px;
+            }
+        }
+        .main-page-body-image {
+            display: inline-block;
+            width: fit-content;
+            padding-top: 40px;
             padding-left: 50px;
-         }
-      }
-      .main-page-body-image {
-         display: inline-block;
-         width: fit-content;
-         padding-top: 40px;
-         padding-left: 50px;
-      }
-   }
+        }
+    }
 }

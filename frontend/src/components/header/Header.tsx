@@ -31,10 +31,10 @@ export const Header = () => {
     return (
         <div className="header">
             <div className="header-logo">
-                <Button text={"Bucket Flowers"} onClick={() => navigate("/")} />
+                <Button text={"Bucket flowers"} onClick={() => navigate("/")} className='btn-home' />
             </div>
             <div className="header-nav-bar">
-                <Button text={"Flowers"} onClick={() => navigate({ pathname: "/flowers" })} />
+                <Button text={"Flowers"} onClick={() => navigate({ pathname: "/flowers" })}/>
                 {auth.isAuthenticated && <Button text={"Upload Flowers"} />}
                 <Button text={"About Us"} onClick={() => navigate({ pathname: "/about" })} />
                 <AuthButton />

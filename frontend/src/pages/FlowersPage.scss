@@ -1,14 +1,22 @@
 .flowers-page {
-   .flowers-page-body {
-      .flowers-page-body-text {
-         display: inline-block;
-         color: white;
-      }
-      .flowers-page-body-image {
-         display: inline-block;
-         width: fit-content;
-         padding-top: 40px;
-         padding-left: 50px;
-      }
-   }
+    height: fit-content;
+    background-color: #232323;
+
+    .flowers-page-body {
+        .flowers-page-body-text {
+            padding-top: 10px;
+            color: white;
+            text-align: center;
+            font-family: 'Abhaya Libre';
+            font-weight: 400;
+            font-size: 30px;
+        }
+
+        .flowers-page-body-image {
+            display: inline-block;
+            width: fit-content;
+            padding-top: 40px;
+            padding-left: 50px;
+        }
+    }
 }
