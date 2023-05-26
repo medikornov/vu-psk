@@ -1,5 +1,40 @@
-.flowers-page-cards {
-   .card {
-      display: inline-flex;
-   }
+.flower-card-container {
+    margin-right: 25px;
+    margin-left: 25px;
+    margin-bottom: 20px;
+    margin-top: 5px;
+    display: inline-flex;
+
+    .flower-card {
+        width: 18rem;
+        background-color: #232323;
+    }
+
+    .card-title {
+        font-family: 'Abel';
+        font-size: 30px;
+        color: white;
+    }
+
+    .card-description {
+        font-family: 'Abhaya Libre Medium';
+        font-size: 17px;
+        color: #606060;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 100%;
+    }
+
+    .quantity-text {
+        font-family: 'Abhaya Libre Medium';
+        font-size: 14px;
+        color: #B0B0B0;
+        text-align: right;
+
+        .quantity-number {
+            color: white;
+            font-size: 17px;
+        }
+    }
 }

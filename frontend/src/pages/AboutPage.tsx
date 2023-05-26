@@ -1,6 +1,10 @@
 import React from "react";
 import { Header } from "../components/header/Header";
 import "./AboutPage.scss";
+import { Footer } from "../components/footer/Footer";
+
+const temporaryTitleText = "About us";
+const temporaryAboutText = "Our online flower shop aims to revolutionize the concept of flower purchasing by providing a seamless and personalized experience for our customers. We have created a platform that offers a wide range of high-quality flowers, tailored to each customer's preferences and occasions. Customers will be able to easily browse our website and choose from various options that suit their unique tastes, budget, and events.";
 
 export const AboutPage = () => {
     return (
@@ -9,11 +13,31 @@ export const AboutPage = () => {
                 <Header />
                 <div className="about-page-body">
                     <div className="about-page-body-text">
-                        About something
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, maxime? Corrupti vero, ipsa repellendus consequatur sit error assumenda adipisci voluptate at quis odit facere molestias perspiciatis porro deleniti enim quos.
+                        <div className="about-page-body-text-title">{temporaryTitleText}</div>
+                        <div className="about-page-body-text-about">{temporaryAboutText}</div>
                     </div>
-                    <div className="about-page-body-image"><img src={'./yesterday.png'} alt="yesterday" /></div>
+                    <div className="about-page-body-image">
+                        <div className="circle-container">
+                            <img src={'./profile.jpg'} alt="yesterday" className="circle-image" />
+                        </div>
+                    </div>
+                    <div className="about-page-body-image">
+                        <div className="circle-container">
+                            <img src={'./profile.jpg'} alt="yesterday" className="circle-image" />
+                        </div>
+                    </div>
+                    <div className="about-page-body-image">
+                        <div className="circle-container">
+                            <img src={'./profile.jpg'} alt="yesterday" className="circle-image" />
+                        </div>
+                    </div>
+                    <div className="about-page-body-image">
+                        <div className="circle-container">
+                            <img src={'./profile.jpg'} alt="yesterday" className="circle-image" />
+                        </div>
+                    </div>
                 </div>
+                <Footer/>
             </div>
         </div>
     );

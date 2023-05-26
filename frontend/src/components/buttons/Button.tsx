@@ -5,12 +5,13 @@ import BootstrapButton from "react-bootstrap/Button";
 interface ButtonProps {
     onClick?: React.MouseEventHandler;
     text?: string;
+    className?: string;
 }
 
-export const Button = ({ text, onClick }: ButtonProps) => {
+export const Button = ({ text, onClick, className }: ButtonProps) => {
     return (
         <div className="button">
-            <BootstrapButton active={false} variant="primary" onClick={onClick}>
+            <BootstrapButton active={false} onClick={onClick} className={className}>
                 {text}
             </BootstrapButton>
         </div>

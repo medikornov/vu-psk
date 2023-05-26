@@ -4,20 +4,29 @@ import "./Card.scss";
 import { Item } from "../../clients/FlowersApiClient";
 import { useNavigate } from "react-router-dom";
 
-export const ItemCard = ({ name, description, itemId }: Item) => {
-    const navigate = useNavigate();
+interface ItemCard {
+    title: string;
+    description: string;
+    quantity: number;
+}
 
+export const ItemCard = ({ title, description, quantity }: ItemCard) => {
     return (
-        <Card style={{ width: '18rem' }} onClick={() => console.log("clicked card")}>
-            <Card.Img variant="top" src="./yesterday.png" />
-            <Card.Body>
-                <Card.Title>{name}</Card.Title>
-                <Card.Text>
-                    {description}
+        <div className="flower-card-container">
+            <Card className="flower-card">
+                <Card.Text className="quantity-text">
+                    <span>{"Sale: "}</span>
+                    <span className="quantity-number">{quantity}</span>
                 </Card.Text>
-                <Button variant="primary">Add To Cart</Button>
-                <Button variant="secondary" onClick={() => navigate("/flowers/" + itemId)}>Details</Button>
-            </Card.Body>
-        </Card>
+                <Card.Img variant="top" src="./yesterday.png" />
+                <Card.Body>
+                    <Card.Title className="card-title">{title}</Card.Title>
+                    <Card.Text className="card-description">
+                        {description}
+                    </Card.Text>
+                    <Button text={"Add To Cart"} className="btn-add-to-cart" />
+                </Card.Body>
+            </Card>
+        </div>
     );
 };

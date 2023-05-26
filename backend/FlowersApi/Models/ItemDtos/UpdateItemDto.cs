@@ -1,6 +1,6 @@
 ﻿using DataAccessLayer.Enums;
 
-namespace FlowersApi.Models.Item
+namespace FlowersApi.Models.ItemDtos
 {
     public class UpdateItemDto
     {

@@ -1,8 +1,9 @@
 import React from "react";
 import { Header } from "../components/header/Header";
 import "./MainPage.scss";
+import { Footer } from "../components/footer/Footer";
 
-const temporaryAboutText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Curabitur gravida arcu ac tortor dignissim. At auctor urna nunc id cursus metus aliquam eleifend mi. Tortor pretium viverra suspendisse potenti nullam ac tortor. Lacus sed turpis tincidunt id.";
+const temporaryAboutText = "Discover the enchanting world of flowers at Blossom Haven, where beauty and nature intertwine to create captivating floral masterpieces. Our flower shop is a haven for floral enthusiasts, offering an extensive selection of exquisite blooms, personalized arrangements, and exceptional service. Whether you're looking to celebrate a special occasion, express your heartfelt emotions, or simply add a touch of elegance to your surroundings, Blossom Haven is here to fulfill all your floral desires.";
 const temporaryTitleText = "Flowers for individual wishes";
 
 export const MainPage = () => {
@@ -15,8 +16,8 @@ export const MainPage = () => {
                         <div className="main-page-body-text-title">{temporaryTitleText}</div>
                         <div className="main-page-body-text-about">{temporaryAboutText}</div>
                     </div>
-                    <div className="main-page-body-image"><img src={'./yesterday.png'} alt="yesterday" /></div>
                 </div>
+                <Footer />
             </div>
         </div>
     );
