@@ -2,11 +2,13 @@
 using DataAccessLayer.Entities;
 using DataAccessLayer.Helpers;
 using DataAccessLayer.Repositories.RepositoryWrapper;
+using FlowersApi.Helpers;
 using FlowersApi.Models.ItemDtos;
 using FlowersApi.Wrappers;
 
 namespace FlowersApi.Services.ItemService
 {
+    [LoggingAspect]
     public class ItemService : IItemService
     {
         private readonly IRepositoryWrapper _repository;
@@ -20,6 +22,7 @@ namespace FlowersApi.Services.ItemService
             _logger = logger;
         }
 
+        [LoggingAspect]
         public async Task<PagedResponse<IEnumerable<ItemResponseDto>>> GetAllAsync(PaginationFilter filter)
         {
             try
@@ -40,6 +43,7 @@ namespace FlowersApi.Services.ItemService
             }
         }
 
+        [LoggingAspect]
         public async Task<ItemResponseDto> GetByIdAsync(Guid itemId)
         {
             try
@@ -54,6 +58,7 @@ namespace FlowersApi.Services.ItemService
             }
         }
 
+        [LoggingAspect]
         public async Task<ItemResponseDto> CreateAsync(CreateItemDto dto)
         {
             try
@@ -93,6 +98,7 @@ namespace FlowersApi.Services.ItemService
             }
         }
 
+        [LoggingAspect]
         public async Task<ItemResponseDto> UpdateAsync(Guid itemId, UpdateItemDto dto)
         {
             try
@@ -133,6 +139,7 @@ namespace FlowersApi.Services.ItemService
             }
         }
 
+        [LoggingAspect]
         public async Task DeleteAsync(Guid itemId)
         {
             try
@@ -150,6 +157,7 @@ namespace FlowersApi.Services.ItemService
         }
 
         // Helper method
+        [LoggingAspect]
         private async Task<Item> GetItemAsync(Guid itemId)
         {
             var item = await _repository.Items.FindAsync(itemId);
