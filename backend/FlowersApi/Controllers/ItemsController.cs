@@ -21,7 +21,7 @@ namespace FlowersApi.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(PagedResponse<IEnumerable<ItemResponseDto>>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAllAsync([FromQuery]PaginationFilter filter)
+        public async Task<IActionResult> GetAllAsync([FromQuery] PaginationFilter filter)
         {
             try
             {
@@ -52,8 +52,9 @@ namespace FlowersApi.Controllers
         }
 
         [HttpPost]
+        [Consumes("multipart/form-data")]
         [ProducesResponseType(typeof(Response<ItemResponseDto>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> CreateAsync([FromBody] CreateItemDto dto)
+        public async Task<IActionResult> CreateAsync([FromForm] CreateItemDto dto)
         {
             try
             {
@@ -68,8 +69,9 @@ namespace FlowersApi.Controllers
         }
 
         [HttpPut("{itemId}")]
+        [Consumes("multipart/form-data")]
         [ProducesResponseType(typeof(Response<ItemResponseDto>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> UpdateAsync([FromRoute]Guid itemId, [FromBody]UpdateItemDto dto)
+        public async Task<IActionResult> UpdateAsync([FromRoute]Guid itemId, [FromForm]UpdateItemDto dto)
         {
             try
             {

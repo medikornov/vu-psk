@@ -14,7 +14,7 @@ namespace FlowersApi.Models.ItemDtos
 
         public decimal? Price { get; set; }
 
-        public string? PhotoUrl { get; set; }
+        public IFormFile? Photo { get; set; }
 
         public decimal? Weight { get; set; }
     }
