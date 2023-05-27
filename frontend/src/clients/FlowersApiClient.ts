@@ -20,7 +20,9 @@ export interface Item {
     quantity: number;
     quantityType: QuantityType;
     price: number;
-    photoUrl: string;
+    photoContent: string;
+    photoName: string;
+    photoContentType: string;
     weight: number;
 }
 
