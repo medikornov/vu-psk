@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using DataAccessLayer.Entities;
 using DataAccessLayer.Repositories.RepositoryWrapper;
+using FlowersApi.Helpers;
 using FlowersApi.Models.OrderItemDtos;
 
 namespace FlowersApi.Services.OrderItemService
 {
+    [LoggingAspect]
     public class OrderItemService : IOrderItemService
     {
         private readonly IRepositoryWrapper _repository;
