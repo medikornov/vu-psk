@@ -1,0 +1,38 @@
+.flowers-details-page {
+   .flowers-details-page-body {
+      display: flex;
+   }
+   .flowers-details-page-body-text {
+      display: flex;
+      flex-direction: column;
+   }
+   .flowers-details-page-body-text-title {
+      color: white;
+      font-size: 35px;
+      text-align: justify;
+      padding-top: 100px;
+      padding-left: 50px;
+      width: 100%;
+      font-family: "Abel";
+      font-size: 70px;
+   }
+   .flowers-details-page-body-text-description,
+   .flowers-details-page-body-text-price,
+   .flowers-details-page-body-text-quantity {
+      color: #e8e8e8;
+      text-align: justify;
+      padding-left: 50px;
+      font-family: "Abhaya Libre Medium";
+      font-size: 16px;
+   }
+   .flowers-details-page-body-cart-button {
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 50px;
+   }
+   .flowers-details-page-body-img {
+      flex: 1;
+      display: inline-block;
+      text-align: right;
+   }
+}

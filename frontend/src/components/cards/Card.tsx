@@ -1,7 +1,9 @@
 import React from "react";
 import { Card } from "react-bootstrap";
-import { Button } from "../buttons/Button";
 import "./Card.scss";
+import { Item } from "../../clients/FlowersApiClient";
+import { useNavigate } from "react-router-dom";
+import { Button } from "../buttons/Button";
 
 interface ItemCard {
     title: string;
@@ -9,7 +11,8 @@ interface ItemCard {
     quantity: number;
 }
 
-export const ItemCard = ({ title, description, quantity }: ItemCard) => {
+export const ItemCard = ({ name, itemId, description, quantity }: Item) => {
+    const navigate = useNavigate();
     return (
         <div className="flower-card-container">
             <Card className="flower-card">
@@ -17,14 +20,14 @@ export const ItemCard = ({ title, description, quantity }: ItemCard) => {
                     <span>{"Sale: "}</span>
                     <span className="quantity-number">{quantity}</span>
                 </Card.Text>
-            <Card.Img variant="top" src="./yesterday.png" />
-            <Card.Body>
-                <Card.Title className="card-title">{title}</Card.Title>
-                <Card.Text className="card-description">
-                    {description}
-                </Card.Text>
+                <Card.Img variant="top" src="./yesterday.png" onClick={() => navigate(`/flowers/${itemId}`)} />
+                <Card.Body>
+                    <Card.Title className="card-title">{name}</Card.Title>
+                    <Card.Text className="card-description">
+                        {description}
+                    </Card.Text>
                     <Button text={"Add To Cart"} className="btn-add-to-cart" />
-            </Card.Body>
+                </Card.Body>
             </Card>
         </div>
     );
