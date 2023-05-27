@@ -5,6 +5,7 @@ import { useQuery } from "react-query";
 import { useFlowersApiClient } from "../clients/FlowersApiProvider";
 import { useAuth0Token, useCurrentOrder } from "../clients/hook";
 import "./CartPage.scss";
+import { Button } from "../components/buttons/Button";
 
 const useOrderItems = () => {
     const auth0Token = useAuth0Token();
@@ -22,9 +23,20 @@ const useOrderItems = () => {
 const OrderItemCard = ({ orderItem }: { orderItem: OrderItem; }) => {
     return (
         <div className="flowers-cart-page-body-text">
+            <div className="flowers-cart-page-body-img">
+            <img
+                src={`data:${orderItem.item.photoContentType};base64,${orderItem.item.photoContent}`}
+                alt={orderItem.item.photoName}
+                />
+            </div>
             {orderItem.item.name}
-            {orderItem.item.price}
-            {orderItem.quantity}
+            <div className="flowers-cart-page-body-price">
+                {orderItem.item.price + "$"}
+            </div>
+            <div className="flowers-cart-page-body-quantity">
+                {"x"+orderItem.quantity}
+            </div>
+            <Button text="x" className ="btn-delete-order-item"/>
         </div>
     );
 };
@@ -45,6 +57,10 @@ export const CartPage = () => {
                             return <OrderItemCard orderItem={orderItem} />;
                         })
                     }
+                </div>
+                <div className="buttons-container">
+                    <Button text={"Cancel"} className="btn-add-to-cart" />
+                    <Button text={"Order"} className="btn-add-to-cart" />
                 </div>
             </div>
         </div>

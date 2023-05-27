@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Header } from "../components/header/Header";
+import React from "react";
 import "./FlowersPage.scss";
 import { ItemCard } from "../components/cards/Card";
-import { Footer } from "../components/footer/Footer";
 import { useItems } from "../clients/hook";
+import { Header } from "../components/header/Header";
+import "./FlowerDetailsPage.scss";
 
 export const FlowersPage = () => {
     const items = useItems();
@@ -16,7 +16,7 @@ export const FlowersPage = () => {
                 </div>
                 <div className="flowers-page-cards">
                     {items.map(item => {
-                        return <ItemCard {...item} />;
+                        return <ItemCard item={item} {...item} />;
                     })}
                 </div>
             </div>
