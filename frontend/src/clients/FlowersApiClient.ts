@@ -56,12 +56,32 @@ export interface Item {
     weight: number;
 }
 
+export interface UploadItem {
+    name: string;
+    description: string;
+    quantity: number;
+    quantityType: QuantityType;
+    price: number;
+    photo: File;
+    weight: number;
+}
+
 const baseUrl = process.env.FLOWERSAPI_BASEURL;
 
 export default class FlowersApiClient {
     baseUrl: string;
     constructor() {
         this.baseUrl = baseUrl ?? "";
+    }
+
+    public async createItem(token: string, item: UploadItem) {
+        // it uses multipart/form-data
+        return axios.post<ApiResponse<UploadItem>>(this.baseUrl + "/api/items", item, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data; boundary=----",
+            }
+        });
     }
 
     public async getAllItems() {

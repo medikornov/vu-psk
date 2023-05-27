@@ -11,7 +11,10 @@ export const useAuth0Token = () => {
 
 export const useItems = () => {
     const flowersApiClient = useFlowersApiClient();
-    const items = useQuery(['items', !!flowersApiClient], () => flowersApiClient?.getAllItems().then(response => response.data));
+    const items = useQuery(['items', !!flowersApiClient], () => flowersApiClient?.getAllItems().then(response => response.data),
+        {
+            suspense: true,
+        });
     return items.data?.data || [];
 };
 

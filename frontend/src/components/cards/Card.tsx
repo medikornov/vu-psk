@@ -3,7 +3,7 @@ import "./Card.scss";
 import { Item } from "../../clients/FlowersApiClient";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../buttons/Button";
-import React, {useState } from "react";
+import React, { useState } from "react";
 import { useFlowersApiClient } from "../../clients/FlowersApiProvider";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useAuth0Token, useCurrentOrder, useItem } from "../../clients/hook";
@@ -38,7 +38,7 @@ export const AddToCart = ({ item }: { item: Item; }) => {
     );
 };
 
-export const ItemCard = ({item }: { item: Item }) => {
+export const ItemCard = ({ item }: { item: Item; }) => {
     const navigate = useNavigate();
 
     return (
@@ -54,7 +54,7 @@ export const ItemCard = ({item }: { item: Item }) => {
                     <Card.Text className="card-description">
                         {item.description}
                     </Card.Text>
-                    <AddToCart item={item}/>
+                    <AddToCart item={item} />
                 </Card.Body>
             </Card>
         </div>
