@@ -14,7 +14,23 @@
 
     .header-nav-bar {
         display: flex;
+
+        .btn-log {
+            color: white;
+        }
+
+        .user-text {
+            color: white;
+            font-size: 12px;
+            text-align: center;
+            padding-top: 9px;
+            border: 2px solid white;
+            background-color: dimgray;
+        }
     }
+
+
+
 
     .header-cart {
         margin-left: auto;
