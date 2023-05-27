@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using DataAccessLayer.Entities;
+using DataAccessLayer.Enums;
 using DataAccessLayer.Helpers;
 using DataAccessLayer.Repositories.RepositoryWrapper;
+using FlowersApi.Helpers;
 using FlowersApi.Models.OrderDtos;
+using FlowersApi.Services.OrderItemService;
 using FlowersApi.Wrappers;
 
 namespace FlowersApi.Services.OrderService
@@ -10,12 +13,14 @@ namespace FlowersApi.Services.OrderService
     public class OrderService : IOrderService
     {
         private readonly IRepositoryWrapper _repository;
+        private readonly IOrderItemService _orderItemService;
         private readonly IMapper _mapper;
         private readonly ILogger<OrderService> _logger;
 
-        public OrderService(IRepositoryWrapper repository, IMapper mapper, ILogger<OrderService> logger)
+        public OrderService(IRepositoryWrapper repository, IOrderItemService orderItemService, IMapper mapper, ILogger<OrderService> logger)
         {
             _repository = repository;
+            _orderItemService = orderItemService;
             _mapper = mapper;
             _logger = logger;
         }
@@ -84,21 +89,57 @@ namespace FlowersApi.Services.OrderService
 
         public async Task<OrderResponseDto> UpdateAsync(Guid orderId, UpdateOrderDto dto)
         {
-            try
+            using(var transaction = await _repository.BeginTransactionAsync())
             {
-                var order = await GetOrderAsync(orderId);
+                try
+                {
+                    var order = await GetOrderAsync(orderId);
 
-                // Copy dto to order and save
-                _mapper.Map(dto, order);
-                _repository.Orders.Update(order);
-                await _repository.SaveAsync();
+                    // If order is completed
+                    if (order.Status == OrderStatus.Completed)
+                    {
+                        throw new AppException($"Order {orderId} is finished and cannot be updated.");
+                    }
 
-                return _mapper.Map<OrderResponseDto>(order);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(44404, ex, "OrderService UpdateAsync caused an exception");
-                throw;
+                    // If updated order is completed
+                    if (dto.Status == OrderStatus.Completed)
+                    {
+                        // Get all order items
+                        var orderItems = await _orderItemService.GetAllByOrderIdAsync(orderId);
+
+                        foreach (var orderItem in orderItems)
+                        {
+                            // Get item from order item and reduce its quanity by the order item quantity
+                            var item = await GetItemAsync((Guid)orderItem.ItemId!);
+                            item.Quantity -= orderItem.Quantity;
+
+                            // Check that it is not less than 0, else throw exception
+                            if (item.Quantity < 0)
+                            {
+                                throw new AppException($"Item {item.ItemId} has less quantity than order item {orderItem.OrderItemId}");
+                            }
+
+                            // Update item
+                            _repository.Items.Update(item);
+                            await _repository.SaveAsync();
+                        }
+                    }
+
+                    // Copy dto to order
+                    _mapper.Map(dto, order);
+                    _repository.Orders.Update(order);
+                    await _repository.SaveAsync();
+
+                    await transaction.CommitAsync();
+
+                    return _mapper.Map<OrderResponseDto>(order);
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    _logger.LogError(44404, ex, "OrderService UpdateAsync caused an exception");
+                    throw;
+                }
             }
         }
 
@@ -140,6 +181,18 @@ namespace FlowersApi.Services.OrderService
             }
 
             return customer;
+        }
+
+        private async Task<Item> GetItemAsync(Guid itemId)
+        {
+            var item = await _repository.Items.FindAsync(itemId);
+
+            if (item == null)
+            {
+                throw new KeyNotFoundException($"Item with id {itemId} not found");
+            }
+
+            return item;
         }
     }
 }
