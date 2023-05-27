@@ -14,10 +14,10 @@ const AuthButton = () => {
     if (auth.isAuthenticated)
         return (
             <>
-                <Button text={"Logout"} onClick={() => auth.logout({ openUrl: false })} />
-                <div style={{ color: "white" }}>
-                    {auth.user?.nickname}
-                </div>
+               <Button text={"Logout"} className = "btn-log" onClick={() => auth.logout({ openUrl: false })} />
+               <div className="user-text">
+                  {auth.user?.nickname}
+               </div>
             </>
         );
 

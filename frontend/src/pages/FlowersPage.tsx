@@ -2,15 +2,15 @@ import React, { Suspense, useEffect, useState } from "react";
 import { Header } from "../components/header/Header";
 import "./FlowersPage.scss";
 import { ItemCard } from "../components/cards/Card";
-import { Footer } from "../components/footer/Footer";
 import { useItems } from "../clients/hook";
 import { Spinner } from "react-bootstrap";
+import "./FlowerDetailsPage.scss";
 
 const Items = () => {
     const items = useItems();
     return (<div className="flowers-page-cards">
         {items.map(item => {
-            return <ItemCard {...item} />;
+            return <ItemCard item={item} />;
         })}
     </div>);
 };

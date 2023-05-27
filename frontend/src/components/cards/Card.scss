@@ -1,10 +1,10 @@
 .flower-card-container {
-    margin-right: 30px; 
-    margin-left: 30px; 
+    margin-right: 30px;
+    margin-left: 30px;
     margin-bottom: 20px;
     margin-top: 10px;
     display: inline-block;
-    width: calc(20% - 60px); 
+    width: calc(20% - 60px);
 
     .flower-card {
         background-color: #232323;
@@ -43,5 +43,9 @@
             color: white;
             font-size: 17px;
         }
+    }
+
+    .btn-add-to-cart{
+        width: 100%;
     }
 }
