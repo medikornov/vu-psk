@@ -1,14 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useFlowersApiClient } from "../clients/FlowersApiProvider";
 import { Item } from "../clients/FlowersApiClient";
 import { Header } from "../components/header/Header";
 import "./FlowerDetailsPage.scss";
 import { Button } from "../components/buttons/Button";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useAuth0Token, useCurrentOrder, useItem } from "../clients/hook";
+
+const AddToCart = ({ item }: { item: Item; }) => {
+    const auth0 = useAuth0();
+    const currentOrder = useCurrentOrder();
+    const flowersApiClient = useFlowersApiClient();
+    const auth0Token = useAuth0Token();
+
+    const [canAdd, setCanAdd] = useState(true);
+
+    return (
+        <div className="flowers-details-page-body-cart-button">
+            <Button disabled={!(canAdd && !!currentOrder)} text={"Add To Cart"} className="btn-add-to-cart" onClick={() => {
+                if (auth0Token) {
+                    if (currentOrder) {
+                        setCanAdd(false);
+                        flowersApiClient?.addItemToOrder(auth0Token, currentOrder.orderId, item.itemId, 1, 1).then(() => setCanAdd(true));
+                    }
+                }
+                else
+                    auth0.loginWithRedirect();
+            }} />
+        </div>
+    );
+};
 
 const Details = ({ item }: { item: Item | undefined; }) => {
     if (!item) return <></>;
-    console.log(item);
     return (
         <>
             <div className="flowers-details-page-body-text">
@@ -24,13 +49,12 @@ const Details = ({ item }: { item: Item | undefined; }) => {
                 <div className="flowers-details-page-body-text-quantity">
                     {item.quantity}
                 </div>
-                // add to cart button
                 <div className="flowers-details-page-body-cart-button">
-                    <Button text={"Add To Cart"} className="btn-add-to-cart" />
+                    <AddToCart item={item} />
                 </div>
             </div>
             <div className="flowers-details-page-body-img">
-                <img src="./../yesterday.png" alt="yesterday" />
+                <img src={`data:image/jpeg;base64,${item.photoContent}`} />
             </div>
         </>
     );
@@ -38,12 +62,7 @@ const Details = ({ item }: { item: Item | undefined; }) => {
 
 export const FlowerDetailsPage = () => {
     const { id: itemId } = useParams();
-
-    const flowersApiClient = useFlowersApiClient();
-    const [item, setItem] = useState<Item | undefined>(undefined);
-    useEffect(() => {
-        itemId && flowersApiClient?.getItem(itemId).then(response => setItem(response.data.data));
-    }, [flowersApiClient]);
+    const item = useItem(itemId);
 
     return (
         <div className='global'>

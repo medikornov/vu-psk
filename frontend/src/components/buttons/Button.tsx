@@ -6,12 +6,13 @@ interface ButtonProps {
     onClick?: React.MouseEventHandler;
     text?: string;
     className?: string;
+    disabled?: boolean;
 }
 
-export const Button = ({ text, onClick, className }: ButtonProps) => {
+export const Button = ({ text, onClick, className, disabled }: ButtonProps) => {
     return (
         <div className="button">
-            <BootstrapButton active={false} onClick={onClick} className={className}>
+            <BootstrapButton disabled={disabled} active={false} onClick={onClick} className={className}>
                 {text}
             </BootstrapButton>
         </div>
