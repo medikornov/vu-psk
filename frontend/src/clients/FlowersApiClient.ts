@@ -50,9 +50,9 @@ export interface Item {
     quantity: number;
     quantityType: QuantityType;
     price: number;
-    photoName: string,
-    photoContentType: string;
     photoContent: string;
+    photoName: string;
+    photoContentType: string;
     weight: number;
 }
 

@@ -7,6 +7,8 @@ import "./FlowerDetailsPage.scss";
 import { Button } from "../components/buttons/Button";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useAuth0Token, useCurrentOrder, useItem } from "../clients/hook";
+import { Footer } from "../components/footer/Footer";
+import { IoIosRose } from 'react-icons/io';
 
 const AddToCart = ({ item }: { item: Item; }) => {
     const auth0 = useAuth0();
@@ -37,28 +39,33 @@ const Details = ({ item }: { item: Item | undefined; }) => {
     return (
         <>
             <div className="flowers-details-page-body-text">
-                <div className="flowers-details-page-body-text-title">
-                    {item.name}
+                <div className="flowers-details-page-body-text-info">
+                    <span className="flowers-details-page-body-text-title">
+                        <IoIosRose />
+                        {item.name}
+                    </span>
+                    <span className="flowers-details-page-body-text-quantity"> Sale: {item.quantity}</span>
                 </div>
                 <div className="flowers-details-page-body-text-description">
                     {item.description}
                 </div>
                 <div className="flowers-details-page-body-text-price">
-                    {item.price}
-                </div>
-                <div className="flowers-details-page-body-text-quantity">
-                    {item.quantity}
+                    {item.price + "$"}
                 </div>
                 <div className="flowers-details-page-body-cart-button">
                     <AddToCart item={item} />
                 </div>
             </div>
             <div className="flowers-details-page-body-img">
-                <img src={`data:image/jpeg;base64,${item.photoContent}`} />
+                <img
+                    src={`data:${item.photoContentType};base64,${item.photoContent}`}
+                    alt={item.photoName}
+                />
             </div>
         </>
     );
 };
+
 
 export const FlowerDetailsPage = () => {
     const { id: itemId } = useParams();
@@ -71,6 +78,7 @@ export const FlowerDetailsPage = () => {
                 <div className="flowers-details-page-body">
                     <Details item={item} />
                 </div>
+                <Footer />
             </div>
         </div>
     );

@@ -20,7 +20,6 @@ export const FlowersPage = () => {
                     })}
                 </div>
             </div>
-            <Footer />
         </div>
 
     );
