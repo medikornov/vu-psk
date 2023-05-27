@@ -4,17 +4,34 @@ import { useFlowersApiClient } from "../clients/FlowersApiProvider";
 import { Item } from "../clients/FlowersApiClient";
 import { Header } from "../components/header/Header";
 import "./FlowerDetailsPage.scss";
+import { Button } from "../components/buttons/Button";
 
 const Details = ({ item }: { item: Item | undefined; }) => {
     if (!item) return <></>;
-
+    console.log(item);
     return (
         <>
-            id:          {item.itemId}<br />
-            name:        {item.name}<br />
-            description: {item.description}<br />
-            price:       {item.price}<br />
-            quantity:    {item.quantity}<br />
+            <div className="flowers-details-page-body-text">
+                <div className="flowers-details-page-body-text-title">
+                    {item.name}
+                </div>
+                <div className="flowers-details-page-body-text-description">
+                    {item.description}
+                </div>
+                <div className="flowers-details-page-body-text-price">
+                    {item.price}
+                </div>
+                <div className="flowers-details-page-body-text-quantity">
+                    {item.quantity}
+                </div>
+                // add to cart button
+                <div className="flowers-details-page-body-cart-button">
+                    <Button text={"Add To Cart"} className="btn-add-to-cart" />
+                </div>
+            </div>
+            <div className="flowers-details-page-body-img">
+                <img src="./../yesterday.png" alt="yesterday" />
+            </div>
         </>
     );
 };
@@ -33,11 +50,9 @@ export const FlowerDetailsPage = () => {
             <div className="flowers-details-page">
                 <Header />
                 <div className="flowers-details-page-body">
-                    <div className="flowers-details-page-body-text">
-                        <Details item={item} />
-                    </div>
+                    <Details item={item} />
                 </div>
             </div>
         </div>
     );
-};
+};;
