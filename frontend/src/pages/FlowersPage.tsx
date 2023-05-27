@@ -2,17 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Header } from "../components/header/Header";
 import "./FlowersPage.scss";
 import { ItemCard } from "../components/cards/Card";
-import { useFlowersApiClient } from "../clients/FlowersApiProvider";
-import { Item } from "../clients/FlowersApiClient";
 import { Footer } from "../components/footer/Footer";
+import { useItems } from "../clients/hook";
 
 export const FlowersPage = () => {
-    const flowersApiClient = useFlowersApiClient();
-    const [items, setItems] = useState<Item[]>([]);
-    useEffect(() => {
-        flowersApiClient?.getAllItems().then(response => setItems(response.data.data));
-    }, [flowersApiClient]);
-
+    const items = useItems();
     return (
         <div className="flowers-page">
             <Header />

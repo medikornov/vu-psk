@@ -34,7 +34,7 @@ export const Header = () => {
                 <Button text={"Bucket flowers"} onClick={() => navigate("/")} className='btn-home' />
             </div>
             <div className="header-nav-bar">
-                <Button text={"Flowers"} onClick={() => navigate({ pathname: "/flowers" })}/>
+                <Button text={"Flowers"} onClick={() => navigate({ pathname: "/flowers" })} />
                 {auth.isAuthenticated && <Button text={"Upload Flowers"} />}
                 <Button text={"About Us"} onClick={() => navigate({ pathname: "/about" })} />
                 <AuthButton />

@@ -1,0 +1,27 @@
+.flowers-cart-page {
+   .flowers-cart-page-body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 100px;
+      padding-bottom: 100px;
+   }
+   .flowers-cart-page-body-title {
+      color: white;
+      font-size: 32px;
+      text-align: justify;
+      padding-top: 50px;
+      display: inline-block;
+      width: 100%;
+      font-family: "Abel";
+      font-size: 70px;
+   }
+   .flowers-cart-page-body-text {
+      color: #e8e8e8;
+      width: 100%;
+      text-align: justify;
+      padding-right: 50px;
+      font-family: "Abhaya Libre Medium";
+      font-size: 18px;
+   }
+}

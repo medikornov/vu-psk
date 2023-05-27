@@ -8,6 +8,9 @@ import { LoginPage } from "./pages/LoginPage";
 import { FlowersPage } from "./pages/FlowersPage";
 import { FlowersApiProvider } from "./clients/FlowersApiProvider";
 import { FlowerDetailsPage } from "./pages/FlowerDetailsPage";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { UserManagementProvider } from "./clients/UserManagementProvider";
+import { CartPage } from "./pages/CartPage";
 
 const domain = process.env.AUTHZERO_DOMAIN ?? "";
 const clientId = process.env.AUTHZERO_CLIENTID ?? "";
@@ -18,28 +21,39 @@ const Auth0ContextProvider = ({ children }: { children: React.ReactElement; }) =
          domain={domain}
          clientId={clientId}
          authorizationParams={{
-            redirect_uri: window.location.origin
+            redirect_uri: window.location.origin,
+            responseType: 'token id_token',
+            scope: 'openid profile email',
+            audience: "https://dev-flowersapi.com"
          }}
+         cacheLocation="localstorage"
       >
          {children}
       </Auth0Provider>
    );
 };
 
+const queryClient = new QueryClient();
+
 export const App = () => {
    return (
-      <Auth0ContextProvider>
-         <FlowersApiProvider>
-            <BrowserRouter>
-               <Routes>
-                  <Route path="/" element={<MainPage />} />
-                  <Route path="/about" element={<AboutPage />} />
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/flowers" element={<FlowersPage />} />
-                  <Route path="/flowers/:id" element={<FlowerDetailsPage />} />
-               </Routes>
-            </BrowserRouter>
-         </FlowersApiProvider>
-      </Auth0ContextProvider>
+      <QueryClientProvider client={queryClient}>
+         <Auth0ContextProvider>
+            <FlowersApiProvider>
+               <UserManagementProvider>
+                  <BrowserRouter>
+                     <Routes>
+                        <Route path="/" element={<MainPage />} />
+                        <Route path="/about" element={<AboutPage />} />
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/flowers" element={<FlowersPage />} />
+                        <Route path="/flowers/:id" element={<FlowerDetailsPage />} />
+                        <Route path="/cart" element={<CartPage />} />
+                     </Routes>
+                  </BrowserRouter>
+               </UserManagementProvider>
+            </FlowersApiProvider>
+         </Auth0ContextProvider>
+      </QueryClientProvider>
    );
 };

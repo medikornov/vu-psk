@@ -1,11 +1,13 @@
 import React from "react";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import './CartButton.scss';
+import { useNavigate } from "react-router-dom";
 
 export const CartButton = () => {
+    const navigate = useNavigate();
     return (
         <div className="cart-button">
-            <AiOutlineShoppingCart style={{
+            <AiOutlineShoppingCart onClick={() => navigate('/cart')} style={{
                 color: "#000000",
                 background: "white",
                 borderRadius: "50%",
