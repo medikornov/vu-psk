@@ -11,6 +11,7 @@ import { FlowerDetailsPage } from "./pages/FlowerDetailsPage";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { UserManagementProvider } from "./clients/UserManagementProvider";
 import { CartPage } from "./pages/CartPage";
+import { UploadFlowersPage } from "./pages/UploadFlowersPage";
 
 const domain = process.env.AUTHZERO_DOMAIN ?? "";
 const clientId = process.env.AUTHZERO_CLIENTID ?? "";
@@ -49,6 +50,7 @@ export const App = () => {
                         <Route path="/flowers" element={<FlowersPage />} />
                         <Route path="/flowers/:id" element={<FlowerDetailsPage />} />
                         <Route path="/cart" element={<CartPage />} />
+                        <Route path="/upload-flowers" element={<UploadFlowersPage />} />
                      </Routes>
                   </BrowserRouter>
                </UserManagementProvider>
