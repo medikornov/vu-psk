@@ -1,0 +1,52 @@
+.upload-page {
+    .upload-page-body {
+        .upload-page-body-title {
+            padding-top: 10px;
+            padding-bottom: 20px;
+            color: white;
+            padding-left: 70px;
+            font-family: "Abhaya Libre";
+            font-weight: 400;
+            font-size: 40px;
+        }
+
+        .upload-page-body-input {
+            display: block;
+            margin-bottom: 20px;
+            margin-left: 70px;
+            width: 600px;
+            font-size: 16px;
+            border-radius: 10px;
+        }
+
+        .upload-page-body-button {
+            display: flex;
+            padding-top: 10px;
+            padding-left: 250px;
+            align-self: center;
+
+
+            button {
+                background-color: white;
+                color: black;
+                width: 220px;
+                border-radius: 20px;
+                border: none;
+            }
+        }
+
+        .upload-page-body-file-input {
+            display: block;
+            background-color: white;
+            margin-bottom: 20px;
+            width: 600px;
+            height: 50px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            margin-left: 70px;
+        }
+    }
+}

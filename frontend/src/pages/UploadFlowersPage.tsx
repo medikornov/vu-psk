@@ -1,11 +1,10 @@
 import React, { ChangeEvent, useState } from "react";
 import { Header } from "../components/header/Header";
 import { Footer } from "../components/footer/Footer";
-import { useAuth0 } from "@auth0/auth0-react";
 import { useAuth0Token } from "../clients/hook";
 import { useFlowersApiClient } from "../clients/FlowersApiProvider";
-import { Form } from "react-bootstrap";
-import { QuantityType } from "../clients/FlowersApiClient";
+import { Button, Form } from "react-bootstrap";
+import "./UploadFlowersPage.scss";
 
 const SingleFileUpload = () => {
     const [file, setFile] = useState<File>();
@@ -38,25 +37,34 @@ const SingleFileUpload = () => {
     const [weight, setWeight] = useState<number>(0);
 
     return (
-        <div>
-            <input type="text" placeholder="Name" onChange={(e) => {
-                setName(e.target.value);
-            }} />
-            <input type="text" placeholder="Description" onChange={(e) => {
-                setDescription(e.target.value);
-            }} />
-            <input type="number" placeholder="Price" onChange={(e) => {
-                setPrice(parseInt(e.target.value));
-            }} />
-            <input type="number" placeholder="Quantity" onChange={(e) => {
-                setQuantity(parseInt(e.target.value));
-            }} />
-            <input type="number" placeholder="Weight" onChange={(e) => {
-                setWeight(parseInt(e.target.value));
-            }} />
-            <input type="file" onChange={handleFileChange} />
-            <div>{file && `${file.name} - ${file.type}`}</div>
-            <button onClick={handleUploadClick}>Upload</button>
+        <div className="upload-page">
+            <div className="upload-page-body">
+                <div className="upload-page-body-title">
+                    Upload flower
+                </div>
+                <input type="text" placeholder="Name" className="upload-page-body-input" onChange={(e) => {
+                    setName(e.target.value);
+                }} />
+                <input type="text" placeholder="Description" className="upload-page-body-input"  onChange={(e) => {
+                    setDescription(e.target.value);
+                }} />
+                <input type="number" placeholder="Price" className="upload-page-body-input"  onChange={(e) => {
+                    setPrice(parseInt(e.target.value));
+                }} />
+                <input type="number" placeholder="Quantity" className="upload-page-body-input"  onChange={(e) => {
+                    setQuantity(parseInt(e.target.value));
+                }} />
+                <input type="number" placeholder="Weight" className="upload-page-body-input"  onChange={(e) => {
+                    setWeight(parseInt(e.target.value));
+                }} />
+                <input type="file" className="upload-page-body-file-input"  onChange={handleFileChange} />
+                    <div>
+                        {file && `${file.name} - ${file.type}`}
+                    </div>
+                <div className="upload-page-body-button">
+                    <Button onClick={handleUploadClick}>Upload</Button>
+                </div>
+            </div>
         </div>
     );
 };
