@@ -14,12 +14,12 @@ namespace DataAccessLayer.Repositories.RepositoryBase
 
         public IQueryable<T> GetAll()
         {
-            return DbContext.Set<T>().AsNoTracking();
+            return DbContext.Set<T>();
         }
 
         public IQueryable<T> GetAllByCondition(Expression<Func<T, bool>> expression)
         {
-            return DbContext.Set<T>().Where(expression).AsNoTracking();
+            return DbContext.Set<T>().Where(expression);
         }
 
         public ValueTask<T?> FindAsync(params object[] keyValues)

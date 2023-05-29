@@ -13,16 +13,6 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var logger = new LoggerConfiguration()
-        .ReadFrom.Configuration(builder.Configuration)
-        .Enrich.FromLogContext()
-        .CreateLogger();
-
-builder.Logging.ClearProviders();
-
-builder.Logging.AddSerilog(logger);
-
-// Add services to the container.
 {
     var services = builder.Services;
     var env = builder.Environment;
@@ -35,6 +25,7 @@ builder.Logging.AddSerilog(logger);
     });
     services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
     services.AddEndpointsApiExplorer();
+    services.AddApplicationInsightsTelemetry();
 
     services.AddSwaggerGen(c =>
     {

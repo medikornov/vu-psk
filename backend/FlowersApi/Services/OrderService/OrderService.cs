@@ -25,6 +25,7 @@ namespace FlowersApi.Services.OrderService
             _logger = logger;
         }
 
+        [LoggingAspect]
         public async Task<PagedResponse<IEnumerable<OrderResponseDto>>> GetAllByCustomerIdAsync(Guid customerId, PaginationFilter filter)
         {
             try
@@ -45,6 +46,7 @@ namespace FlowersApi.Services.OrderService
             }
         }
 
+        [LoggingAspect]
         public async Task<OrderResponseDto> GetByIdAsync(Guid orderId)
         {
             try
@@ -59,6 +61,7 @@ namespace FlowersApi.Services.OrderService
             }
         }
 
+        [LoggingAspect]
         public async Task<OrderResponseDto> CreateAsync(CreateOrderDto dto)
         {
             try
@@ -87,6 +90,7 @@ namespace FlowersApi.Services.OrderService
             }
         }
 
+        [LoggingAspect]
         public async Task<OrderResponseDto> UpdateAsync(Guid orderId, UpdateOrderDto dto)
         {
             using(var transaction = await _repository.BeginTransactionAsync())
@@ -143,6 +147,7 @@ namespace FlowersApi.Services.OrderService
             }
         }
 
+        [LoggingAspect]
         public async Task DeleteAsync(Guid orderId)
         {
             try
