@@ -12,7 +12,7 @@ namespace FlowersApi.Helpers
             LoggerFactory.Create(builder =>
             {
                 builder.AddConsole();
-                builder.AddApplicationInsights();
+                builder.AddApplicationInsights("4bbab67d-b131-4913-a6a1-912357f1de82");
             }).CreateLogger<LoggingAspect>();
 
         public override void OnEntry(MethodExecutionArgs args)
@@ -37,11 +37,11 @@ namespace FlowersApi.Helpers
         private void LoadConfiguration()
         {
             var configurationBuilder = new ConfigurationBuilder();
-            configurationBuilder.AddJsonFile("appsettings.json");
+            configurationBuilder.AddJsonFile("appsettings.json").AddEnvironmentVariables();
 
             var configuration = configurationBuilder.Build();
 
-            LoggingAspectEnabled = configuration.GetValue<bool>("LoggingAspectEnabled");
+            LoggingAspectEnabled = bool.Parse(configuration.GetValue<string>("LoggingAspectEnabled")!);
         }
     }
 }
