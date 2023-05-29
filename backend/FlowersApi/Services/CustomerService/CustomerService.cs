@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DataAccessLayer.Entities;
 using DataAccessLayer.Repositories.RepositoryWrapper;
+using FlowersApi.Helpers;
 using FlowersApi.Models.CustomerDtos;
 
 namespace FlowersApi.Services.CustomerService
@@ -18,6 +19,7 @@ namespace FlowersApi.Services.CustomerService
             _logger = logger;
         }
 
+        [LoggingAspect]
         public async Task<CustomerResponseDto> GetByIdAsync(Guid customerId)
         {
             try
@@ -32,6 +34,7 @@ namespace FlowersApi.Services.CustomerService
             }
         }
 
+        [LoggingAspect]
         public async Task<CustomerResponseDto> GetByAuthZeroUserIdAsync(string authZeroUserId)
         {
             try
@@ -46,6 +49,7 @@ namespace FlowersApi.Services.CustomerService
             }
         }
 
+        [LoggingAspect]
         public async Task<CustomerResponseDto> CreateAsync(CreateCustomerDto dto)
         {
             try
@@ -70,6 +74,7 @@ namespace FlowersApi.Services.CustomerService
             }
         }
 
+        [LoggingAspect]
         public async Task<CustomerResponseDto> UpdateAsync(Guid customerId, UpdateCustomerDto dto)
         {
             try
@@ -91,6 +96,7 @@ namespace FlowersApi.Services.CustomerService
             }
         }
 
+        [LoggingAspect]
         public async Task DeleteAsync(Guid customerId)
         {
             try

@@ -6,7 +6,6 @@ using FlowersApi.Models.OrderItemDtos;
 
 namespace FlowersApi.Services.OrderItemService
 {
-    [LoggingAspect]
     public class OrderItemService : IOrderItemService
     {
         private readonly IRepositoryWrapper _repository;
@@ -20,6 +19,7 @@ namespace FlowersApi.Services.OrderItemService
             _logger = logger;
         }
 
+        [LoggingAspect]
         public async Task<IEnumerable<OrderItemResponseDto>> GetAllByOrderIdAsync(Guid orderId)
         {
             try
@@ -40,6 +40,7 @@ namespace FlowersApi.Services.OrderItemService
             }
         }
 
+        [LoggingAspect]
         public async Task<OrderItemResponseDto> GetByIdAsync(Guid orderItemId)
         {
             try
@@ -54,12 +55,12 @@ namespace FlowersApi.Services.OrderItemService
             }
         }
 
+        [LoggingAspect]
         public async Task<OrderItemResponseDto> CreateAsync(CreateOrderItemDto dto)
         {
             try
             {
                 var orderItem = _mapper.Map<OrderItem>(dto);
-                orderItem.OrderItemId = Guid.NewGuid();
 
                 //Check if order exists for orderItem
                 if (dto.OrderId == null)
@@ -69,12 +70,34 @@ namespace FlowersApi.Services.OrderItemService
 
                 var order = await GetOrderAsync((Guid)orderItem.OrderId!);
 
+                // Check if order item already exists
+                var orderItems = await GetAllByOrderIdAsync(order.OrderId);
+
+                if (orderItems != null && orderItems.Any())
+                {
+                    foreach (var orderItemInOrder in orderItems)
+                    {
+                        if (orderItemInOrder.ItemId == dto.ItemId)
+                        {
+                            var orderItemOld = await GetOrderItemAsync(orderItemInOrder.OrderItemId);
+                            orderItemOld.Quantity += dto.Quantity;
+                            _repository.OrderItems.Update(orderItemOld);
+                            await _repository.SaveAsync();
+                            
+                            return _mapper.Map<OrderItemResponseDto>(orderItemOld);
+                        }
+                    }
+                }
+
+                orderItem.OrderItemId = Guid.NewGuid();
+
                 //Check if items exists for orderItem
                 if (dto.ItemId == null)
                 {
                     throw new InvalidOperationException("No item id provided.");
                 }
 
+                // Check if item exists
                 var item = await GetItemAsync((Guid)orderItem.ItemId!);
 
                 _repository.OrderItems.Add(orderItem);
@@ -89,6 +112,7 @@ namespace FlowersApi.Services.OrderItemService
             }
         }
 
+        [LoggingAspect]
         public async Task<OrderItemResponseDto> UpdateAsync(Guid orderItemId, UpdateOrderItemDto dto)
         {
             try
@@ -108,6 +132,7 @@ namespace FlowersApi.Services.OrderItemService
             }
         }
 
+        [LoggingAspect]
         public async Task DeleteAsync(Guid orderItemId)
         {
             try

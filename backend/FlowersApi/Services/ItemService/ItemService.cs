@@ -8,7 +8,6 @@ using FlowersApi.Wrappers;
 
 namespace FlowersApi.Services.ItemService
 {
-    [LoggingAspect]
     public class ItemService : IItemService
     {
         private readonly IRepositoryWrapper _repository;
@@ -157,7 +156,6 @@ namespace FlowersApi.Services.ItemService
         }
 
         // Helper method
-        [LoggingAspect]
         private async Task<Item> GetItemAsync(Guid itemId)
         {
             var item = await _repository.Items.FindAsync(itemId);
