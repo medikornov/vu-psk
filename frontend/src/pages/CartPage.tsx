@@ -1,7 +1,7 @@
 import React, { Suspense, useState } from "react";
 import { Header } from "../components/header/Header";
 import { OrderItem } from "../clients/FlowersApiClient";
-import { useCurrentOrder, useDeleteOrder, useDeleteOrderItem, useOrderItems, useOrderItemsQuery, useUpdateOrderItem } from "../clients/hook";
+import { useCurrentOrder, useDeleteOrder, useDeleteOrderItem, useOrderItems, useOrderItemsQuery, useUpdateOrder, useUpdateOrderItem } from "../clients/hook";
 import "./CartPage.scss";
 import { Button } from "../components/buttons/Button";
 import { Spinner } from "react-bootstrap";
@@ -76,6 +76,7 @@ export const OrderItems = () => {
 export const CartPage = () => {
     const currentOrder = useCurrentOrder();
     const deleteOrder = useDeleteOrder();
+    const updateOrder = useUpdateOrder();
     return (
         <div className='global'>
             <div className="flowers-cart-page">
@@ -103,7 +104,12 @@ export const CartPage = () => {
                                     onSuccess: () => { }
                                 });
                             }} />
-                        <Button text={"Order"} className="btn-add-to-cart" />
+                        <Button text={"Order"}
+                            className="btn-add-to-cart"
+                            disabled={updateOrder.isLoading}
+                            onClick={() => {
+                                updateOrder.mutate({ ...currentOrder, status: "InProgress" });
+                            }} />
                     </>}
                 </div>
             </div>
