@@ -5,6 +5,7 @@ using DataAccessLayer.Repositories.RepositoryWrapper;
 using FlowersApi.Helpers;
 using FlowersApi.Models.ItemDtos;
 using FlowersApi.Wrappers;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlowersApi.Services.ItemService
 {
@@ -104,6 +105,12 @@ namespace FlowersApi.Services.ItemService
             {
                 var item = await GetItemAsync(itemId);
 
+                // If the item has been updated by another user, throw an exception
+                if (!item.Version.SequenceEqual(dto.Version) && !dto.IsOverride)
+                {
+                    throw new DbUpdateConcurrencyException("Item was updated by another user. Update anyway or refresh and try again.");
+                }
+
                 if (dto.Photo != null && dto.Photo.Length > 0)
                 {
                     using (var memoryStream = new MemoryStream())
@@ -130,6 +137,11 @@ namespace FlowersApi.Services.ItemService
                 await _repository.SaveAsync();
 
                 return _mapper.Map<ItemResponseDto>(item);
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                _logger.LogError(29004, ex, "ItemService UpdateAsync caused a DbUpdateConcurrencyException");
+                throw new DbUpdateConcurrencyException("Item was updated by another user. Update anyway or refresh and try again.");
             }
             catch (Exception ex)
             {

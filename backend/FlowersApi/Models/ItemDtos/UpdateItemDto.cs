@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace FlowersApi.Models.ItemDtos
 {
@@ -17,5 +18,11 @@ namespace FlowersApi.Models.ItemDtos
         public IFormFile? Photo { get; set; }
 
         public decimal? Weight { get; set; }
+
+        [Required]
+        public byte[] Version { get; set;}
+
+        [Required]
+        public bool IsOverride { get; set; }
     }
 }

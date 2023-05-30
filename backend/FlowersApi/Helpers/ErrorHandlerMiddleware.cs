@@ -1,4 +1,5 @@
 ﻿using FlowersApi.Wrappers;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Text.Json;
 
@@ -37,6 +38,11 @@ namespace FlowersApi.Helpers
                         // Not found error
                         _logger.LogError(4002, error, "Application got a key not found exception.");
                         response.StatusCode = (int)HttpStatusCode.NotFound;
+                        break;
+                    case DbUpdateConcurrencyException:
+                        // Concurrency error
+                        _logger.LogError(4003, error, "Application got a concurrency exception.");
+                        response.StatusCode = (int)HttpStatusCode.Conflict;
                         break;
                     default:
                         // Unhandled error
