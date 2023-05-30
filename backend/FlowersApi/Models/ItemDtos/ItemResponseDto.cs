@@ -24,5 +24,7 @@ namespace FlowersApi.Models.ItemDtos
         public byte[]? PhotoContent { get; set; }
 
         public decimal? Weight { get; set; }
+
+        public byte[] Version { get; set; }
     }
 }

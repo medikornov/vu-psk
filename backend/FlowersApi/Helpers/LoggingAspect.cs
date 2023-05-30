@@ -37,7 +37,9 @@ namespace FlowersApi.Helpers
         private void LoadConfiguration()
         {
             var configurationBuilder = new ConfigurationBuilder();
-            configurationBuilder.AddJsonFile("appsettings.json").AddEnvironmentVariables();
+            configurationBuilder
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables();
 
             var configuration = configurationBuilder.Build();
 
