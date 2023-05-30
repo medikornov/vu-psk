@@ -1,7 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useFlowersApiClient } from "./FlowersApiProvider";
 import { useEffect, useMemo, useState } from "react";
+import { OrderItem } from "./FlowersApiClient";
 
 export const useAuth0Token = () => {
     const auth0 = useAuth0();
@@ -131,4 +132,56 @@ export const useCustomerCreation = () => {
                 });
         }
     }, [userState, token, flowersApiClient, auth0]);
+};
+
+export const useOrderItemsQuery = () => {
+    const auth0Token = useAuth0Token();
+    const flowersApiClient = useFlowersApiClient();
+    const currentOrder = useCurrentOrder();
+
+    return useQuery(["orderItems", !!auth0Token, !!currentOrder, currentOrder?.orderId],
+        () => currentOrder && auth0Token && flowersApiClient ?
+            flowersApiClient?.getOrderItems(auth0Token, currentOrder.orderId).then(data => data.data) : undefined,
+        { refetchOnMount: false, refetchOnWindowFocus: false, suspense: true }
+    );
+};
+
+export const useOrderItems = () => {
+    const orderItems = useOrderItemsQuery();
+    return orderItems.data?.data ?? [];
+};
+
+export const useDeleteOrderItem = () => {
+    const token = useAuth0Token();
+    const flowersApiClient = useFlowersApiClient();
+    const orderItemsQuery = useOrderItemsQuery();
+    return useMutation({
+        mutationFn: (orderItemId: string) => token && flowersApiClient ?
+            flowersApiClient.removeItemFromOrder(token, orderItemId) : Promise.reject("No client"),
+        onSuccess: () => {
+            orderItemsQuery.refetch();
+        }
+    });
+};
+
+export const useUpdateOrderItem = () => {
+    const token = useAuth0Token();
+    const flowersApiClient = useFlowersApiClient();
+    const orderItemsQuery = useOrderItemsQuery();
+    return useMutation({
+        mutationFn: (orderItem: OrderItem) => token && flowersApiClient ?
+            flowersApiClient.updateOrderItem(token, orderItem) : Promise.reject("No client"),
+        onSuccess: () => {
+            //orderItemsQuery.refetch();
+        }
+    });
+};
+
+export const useDeleteOrder = () => {
+    const token = useAuth0Token();
+    const flowersApiClient = useFlowersApiClient();
+    return useMutation({
+        mutationFn: (orderId: string) => token && flowersApiClient ?
+            flowersApiClient.deleteOrder(token, orderId) : Promise.reject("No client"),
+    });
 };

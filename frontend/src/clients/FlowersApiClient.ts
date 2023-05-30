@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
 export type QuantityType = "Gram" | "Kilo";
 
@@ -75,7 +75,6 @@ export default class FlowersApiClient {
     }
 
     public async createItem(token: string, item: UploadItem) {
-        // it uses multipart/form-data
         return axios.post<ApiResponse<UploadItem>>(this.baseUrl + "/api/items", item, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -124,6 +123,17 @@ export default class FlowersApiClient {
         });
     }
 
+    public async deleteOrder(token: string, orderId: string) {
+        return axios.delete(this.baseUrl + `/api/orders/${orderId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+
+
+    // OrderItems
+
     public async getOrderItems(token: string, orderId: string) {
         return axios.get<ApiResponse<OrderItem[]>>(this.baseUrl + `/api/orders/${orderId}/orderItems`, {
             headers: {
@@ -140,5 +150,20 @@ export default class FlowersApiClient {
         });
     }
 
+    public async updateOrderItem(token: string, orderItem: OrderItem) {
+        return axios.put(this.baseUrl + `/api/orderItems/${orderItem.orderItemId}`, orderItem, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+
+    public async removeItemFromOrder(token: string, orderItemId: string) {
+        return axios.delete<ApiResponse<Order>>(this.baseUrl + `/api/orderItems/${orderItemId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
 
 }

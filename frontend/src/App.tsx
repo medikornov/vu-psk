@@ -12,6 +12,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { UserManagementProvider } from "./clients/UserManagementProvider";
 import { CartPage } from "./pages/CartPage";
 import { UploadFlowersPage } from "./pages/UploadFlowersPage";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { MyFlowersPage } from "./pages/MyFlowersPage";
 
 const domain = process.env.AUTHZERO_DOMAIN ?? "";
 const clientId = process.env.AUTHZERO_CLIENTID ?? "";
@@ -38,7 +40,7 @@ const queryClient = new QueryClient();
 
 export const App = () => {
    return (
-      <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient} >
          <Auth0ContextProvider>
             <FlowersApiProvider>
                <UserManagementProvider>
@@ -51,6 +53,7 @@ export const App = () => {
                         <Route path="/flowers/:id" element={<FlowerDetailsPage />} />
                         <Route path="/cart" element={<CartPage />} />
                         <Route path="/upload-flowers" element={<UploadFlowersPage />} />
+                        <Route path="my-flowers" element={<MyFlowersPage />} />
                      </Routes>
                   </BrowserRouter>
                </UserManagementProvider>

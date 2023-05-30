@@ -14,10 +14,10 @@ const AuthButton = () => {
     if (auth.isAuthenticated)
         return (
             <>
-               <Button text={"Logout"} className = "btn-log" onClick={() => auth.logout({ openUrl: false })} />
-               <div className="user-text">
-                  {auth.user?.nickname}
-               </div>
+                <Button text={"Logout"} className="btn-log" onClick={() => auth.logout({ openUrl: false })} />
+                <div className="user-text">
+                    {auth.user?.nickname}
+                </div>
             </>
         );
 
@@ -36,6 +36,7 @@ export const Header = () => {
             <div className="header-nav-bar">
                 <Button text={"Flowers"} onClick={() => navigate({ pathname: "/flowers" })} />
                 {auth.isAuthenticated && <Button text={"Upload Flowers"} onClick={() => navigate({ pathname: "/upload-flowers" })} />}
+                {auth.isAuthenticated && <Button text={"My Flowers"} onClick={() => navigate({ pathname: "/my-flowers" })} />}
                 <Button text={"About Us"} onClick={() => navigate({ pathname: "/about" })} />
                 <AuthButton />
             </div>
