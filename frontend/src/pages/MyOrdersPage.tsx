@@ -13,27 +13,26 @@ export const MyOrdersPage = () => {
                 <div className="myorders-body">
                     <div className="myorders-body-text">
                         <div className="myorders-body-text-title">My Orders</div>
-                        <div className="myorders-page-orders">
-                            {myOrders.map(order => {
-                                return (
-                                    <div className="myorders-page-order">
-                                        <div className="myorders-page-order-id">
-                                            {order.orderId}
-                                        </div>
-                                        <div className="myorders-page-order-date">
-                                            {new Date(order.creationTime).toDateString()}
-                                        </div>
-                                        <div className="myorders-page-order-price">
-                                            {order.orderTotal}
-                                        </div>
-                                        <div className="myorders-page-order-status">
-                                            {order.status}
-                                        </div>
-                                    </div>
-                                );
-                            })
-                            }
-                        </div>
+                            <table className="myorders-page-orders">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Date</th>
+                                        <th>Price</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {myOrders.map(order => (
+                                        <tr key={order.orderId}>
+                                            <td>{order.orderId}</td>
+                                            <td>{new Date(order.creationTime).toDateString()}</td>
+                                            <td>{order.orderTotal}</td>
+                                            <td>{order.status}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
                     </div>
                 </div>
             </div>

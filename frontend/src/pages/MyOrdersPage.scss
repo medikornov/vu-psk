@@ -1,23 +1,64 @@
 .myorders-page {
-   .myorders-body {
-      .myorders-body-text-title {
-         padding-top: 10px;
-         padding-bottom: 20px;
-         color: white;
-         padding-left: 70px;
-         font-family: "Abhaya Libre";
-         font-weight: 400;
-         font-size: 40px;
-      }
+    .myorders-body {
+        padding-left: 40px;
 
-      .myorders-page-orders {
-         color: white;
-         text-align: justify;
-         padding-top: 40px;
-         display: inline-block;
-         width: 100%;
-         font-family: "Abel";
-         cursor: pointer;
-      }
-   }
+        .myorders-body-text {
+            display: flex;
+            flex-direction: column;
+            width: 900px;
+            align-items: center;
+            padding-bottom: 20px;
+        }
+
+        .myorders-body-text-title {
+            color: white;
+            font-size: 32px;
+            text-align: justify;
+            padding-top: 40px;
+            display: inline-block;
+            width: 100%;
+            font-family: "Abel";
+            font-size: 50px;
+        }
+
+        table.myorders-page-orders {
+            color: white;
+            text-align: justify;
+            padding-top: 40px;
+            width: 100%;
+            font-family: "Abel";
+            border-collapse: collapse;
+        }
+
+        table.myorders-page-orders th,
+        table.myorders-page-orders td {
+            padding: 8px;
+            border: 1px solid white;
+        }
+
+        table.myorders-page-orders th {
+            background-color: #333;
+            color: white;
+        }
+
+        .myorders-page-orders {
+            color: white;
+            text-align: justify;
+            padding-top: 40px;
+            display: inline-block;
+            width: 100%;
+            font-family: "Abel";
+        }
+
+        .myorders-page-body-title {
+            color: white;
+            font-size: 32px;
+            text-align: justify;
+            padding-top: 40px;
+            display: inline-block;
+            width: 100%;
+            font-family: "Abel";
+            font-size: 50px;
+        }
+    }
 }
