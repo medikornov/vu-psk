@@ -9,6 +9,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useAuth0Token, useCurrentOrder, useItem, useOrderItemsQuery } from "../clients/hook";
 import { Footer } from "../components/footer/Footer";
 import { IoIosRose } from 'react-icons/io';
+import { ToastMessage } from "../components/toasts/Toast";
 
 const AddToCart = ({ item }: { item: Item; }) => {
     const auth0 = useAuth0();
@@ -80,6 +81,7 @@ export const FlowerDetailsPage = () => {
                 <div className="flowers-details-page-body">
                     <Details item={item} />
                 </div>
+                <ToastMessage />
                 <Footer />
             </div>
         </div>

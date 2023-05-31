@@ -75,7 +75,7 @@ export default class FlowersApiClient {
     }
 
     public async createItem(token: string, item: UploadItem) {
-        return axios.post<ApiResponse<UploadItem>>(this.baseUrl + "/api/items", item, {
+        return axios.post<ApiResponse<Item>>(this.baseUrl + "/api/items", item, {
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "multipart/form-data; boundary=----",

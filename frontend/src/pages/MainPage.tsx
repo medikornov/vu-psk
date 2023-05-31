@@ -2,6 +2,7 @@ import React from "react";
 import { Header } from "../components/header/Header";
 import "./MainPage.scss";
 import { Footer } from "../components/footer/Footer";
+import { ToastMessage } from "../components/toasts/Toast";
 
 const temporaryAboutText = "Discover the enchanting world of flowers at Blossom Haven, where beauty and nature intertwine to create captivating floral masterpieces. Our flower shop is a haven for floral enthusiasts, offering an extensive selection of exquisite blooms, personalized arrangements, and exceptional service. Whether you're looking to celebrate a special occasion, express your heartfelt emotions, or simply add a touch of elegance to your surroundings, Blossom Haven is here to fulfill all your floral desires.";
 const temporaryTitleText = "Flowers for individual wishes";
@@ -17,6 +18,7 @@ export const MainPage = () => {
                         <div className="main-page-body-text-about">{temporaryAboutText}</div>
                     </div>
                 </div>
+                <ToastMessage />
                 <Footer />
             </div>
         </div>

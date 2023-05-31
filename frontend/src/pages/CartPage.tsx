@@ -6,6 +6,7 @@ import "./CartPage.scss";
 import { Button } from "../components/buttons/Button";
 import { Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { ToastMessage } from "../components/toasts/Toast";
 
 const OrderItemCard = ({ orderItem: initialOrderItem }: { orderItem: OrderItem; }) => {
     const deleteOrderItem = useDeleteOrderItem();
@@ -77,6 +78,8 @@ export const CartPage = () => {
     const currentOrder = useCurrentOrder();
     const deleteOrder = useDeleteOrder();
     const updateOrder = useUpdateOrder();
+    const orderItems = useOrderItems();
+
     return (
         <div className='global'>
             <div className="flowers-cart-page">
@@ -93,26 +96,33 @@ export const CartPage = () => {
                         <OrderItems />
                     </Suspense>
                 </div>
-                <div className="buttons-container">
-                    {currentOrder && <>
-                        <Button text={"Cancel"}
-                            className="btn-add-to-cart"
-                            disabled={deleteOrder.isLoading}
-                            onClick={() => {
-                                // not working
-                                deleteOrder.mutate(currentOrder!.orderId, {
-                                    onSuccess: () => { }
-                                });
-                            }} />
-                        <Button text={"Order"}
-                            className="btn-add-to-cart"
-                            disabled={updateOrder.isLoading}
-                            onClick={() => {
-                                updateOrder.mutate({ ...currentOrder, status: "InProgress" });
-                            }} />
-                    </>}
-                </div>
+                {orderItems.length === 0 ?
+                    <div className="flowers-cart-page-body-title" style={{ paddingLeft: 50 }}>
+                        Your cart is empty
+                    </div>
+                    :
+                    <div className="buttons-container">
+                        {currentOrder && <>
+                            <Button text={"Cancel"}
+                                className="btn-add-to-cart"
+                                disabled={deleteOrder.isLoading}
+                                onClick={() => {
+                                    // not working
+                                    deleteOrder.mutate(currentOrder!.orderId, {
+                                        onSuccess: () => { }
+                                    });
+                                }} />
+                            <Button text={"Order"}
+                                className="btn-add-to-cart"
+                                disabled={updateOrder.isLoading}
+                                onClick={() => {
+                                    updateOrder.mutate({ ...currentOrder, status: "InProgress" });
+                                }} />
+                        </>}
+                    </div>
+                }
+                <ToastMessage />
             </div>
         </div>
     );
-};
+};;

@@ -1,5 +1,6 @@
 import React from "react";
 import { Header } from "../components/header/Header";
+import { ToastMessage } from "../components/toasts/Toast";
 
 export const MyFlowersPage = () => {
     return (
@@ -11,6 +12,7 @@ export const MyFlowersPage = () => {
                         <div className="myflowers-body-text-title">My Flowers</div>
                     </div>
                 </div>
+                <ToastMessage />
             </div>
         </div>
     );

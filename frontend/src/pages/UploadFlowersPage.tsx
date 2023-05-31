@@ -1,26 +1,25 @@
 import React, { ChangeEvent, useState } from "react";
 import { Header } from "../components/header/Header";
 import { Footer } from "../components/footer/Footer";
-import { useAuth0Token } from "../clients/hook";
-import { useFlowersApiClient } from "../clients/FlowersApiProvider";
+import { useCreateItem } from "../clients/hook";
 import { Button } from "react-bootstrap";
 import "./UploadFlowersPage.scss";
+import { ToastMessage } from "../components/toasts/Toast";
 
 const SingleFileUpload = () => {
-    const [file, setFile] = useState<File>();
+    const [file, setFile] = useState<File | undefined>(undefined);
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             setFile(e.target.files[0]);
         }
     };
-    const flowersApiClient = useFlowersApiClient();
-    const auth0Token = useAuth0Token();
+    const uploadItem = useCreateItem();
     const handleUploadClick = () => {
-        if (!file && !flowersApiClient && !auth0Token) {
+        if (!file && !uploadItem.isLoading) {
             return;
         }
 
-        flowersApiClient!.createItem(auth0Token!, {
+        uploadItem.mutate({
             name,
             description,
             price,
@@ -62,7 +61,7 @@ const SingleFileUpload = () => {
                     {file && `${file.name} - ${file.type}`}
                 </div>
                 <div className="upload-page-body-button">
-                    <Button onClick={handleUploadClick}>Upload</Button>
+                    <Button disabled={uploadItem.isLoading} onClick={handleUploadClick}>Upload</Button>
                 </div>
             </div>
         </div>
@@ -79,6 +78,7 @@ export const UploadFlowersPage = () => {
                         <SingleFileUpload />
                     </div>
                 </div>
+                <ToastMessage />
                 <Footer />
             </div>
         </div>

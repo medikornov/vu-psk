@@ -2,7 +2,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQuery } from "react-query";
 import { useFlowersApiClient } from "./FlowersApiProvider";
 import { useEffect, useMemo, useState } from "react";
-import { Order, OrderItem } from "./FlowersApiClient";
+import { Item, Order, OrderItem, UploadItem } from "./FlowersApiClient";
+import { useNavigate } from "react-router-dom";
 
 export const useAuth0Token = () => {
     const auth0 = useAuth0();
@@ -10,12 +11,17 @@ export const useAuth0Token = () => {
     return token.data;
 };
 
-export const useItems = () => {
+const useItemsQuery = (suspense = true) => {
     const flowersApiClient = useFlowersApiClient();
-    const items = useQuery(['items', !!flowersApiClient], () => flowersApiClient?.getAllItems().then(response => response.data),
+    return useQuery(['items', !!flowersApiClient], () => flowersApiClient?.getAllItems().then(response => response.data),
         {
-            suspense: true,
+            suspense: suspense,
+            refetchOnMount: false,
         });
+};
+
+export const useItems = () => {
+    const items = useItemsQuery();
     return items.data?.data || [];
 };
 
@@ -39,7 +45,8 @@ export const useCustomer = () => {
             : undefined,
         {
             cacheTime: Infinity,
-            retry: false
+            retry: false,
+            enabled: !!token && !!flowersApiClient && !!auth0?.user?.sub
         }
     );
     return customer.data;
@@ -58,7 +65,9 @@ export const useOrders = () => {
             cacheTime: Infinity,
             retry: false,
             refetchOnWindowFocus: false,
-            refetchOnMount: false
+            refetchOnMount: false,
+            enabled: !!token && !!flowersApiClient && !!customer?.customerId,
+            keepPreviousData: false
         }
     );
     return orders;
@@ -66,35 +75,43 @@ export const useOrders = () => {
 
 type CreationState = "NOT_CREATED" | "CREATING" | "CREATED";
 
-export const useCurrentOrder = () => {
+export const useOrderCreation = () => {
     const token = useAuth0Token();
     const customer = useCustomer();
     const flowersApiClient = useFlowersApiClient();
     const orders = useOrders();
-    const [orderState, setOrderState] = useState<CreationState>("CREATED");
 
+    return useQuery(['orderCreation', !!flowersApiClient, token, customer?.customerId, orders.data],
+        () => flowersApiClient && token && customer
+            ? flowersApiClient.createEmptyOrder(token, customer!.customerId!)
+            : Promise.reject("Not authenticated"),
+        {
+            onSuccess: () => {
+                orders.refetch();
+            },
+            enabled: false
+        }
+    );
+};
+
+export const useCurrentOrder = () => {
+    const orders = useOrders();
+    const createEmptyOrder = useOrderCreation();
     const currentOrder = useMemo(() => {
         if (orders.data) {
             const currentOrder = orders.data.find(order => order.status === "Created");
             if (currentOrder) {
                 return currentOrder;
-            } else {
-                setOrderState("NOT_CREATED");
             }
         }
         return undefined;
     }, [orders.data]);
 
     useEffect(() => {
-        if (orderState == "NOT_CREATED" && orders.isFetched && token && flowersApiClient && customer?.customerId && !currentOrder) {
-            setOrderState("CREATING");
-            flowersApiClient.createEmptyOrder(token, customer.customerId).then(() => {
-                console.log("Order created");
-                setOrderState("CREATED");
-                orders.refetch();
-            });
+        if (orders.isSuccess && !orders.isLoading && !orders.isFetching && !currentOrder && !createEmptyOrder.isLoading && !createEmptyOrder.isRefetching) {
+            createEmptyOrder.refetch();
         }
-    }, [currentOrder, orderState, orders.isFetched]);
+    }, [orders.isSuccess, createEmptyOrder, currentOrder]);
 
     return currentOrder;
 };
@@ -145,10 +162,15 @@ export const useOrderItemsQuery = () => {
     const flowersApiClient = useFlowersApiClient();
     const currentOrder = useCurrentOrder();
 
-    return useQuery(["orderItems", !!auth0Token, !!currentOrder, currentOrder?.orderId],
-        () => currentOrder && auth0Token && flowersApiClient ?
-            flowersApiClient?.getOrderItems(auth0Token, currentOrder.orderId).then(data => data.data) : undefined,
-        { refetchOnMount: false, refetchOnWindowFocus: false, suspense: true }
+    return useQuery(
+        ["orderItems", !!auth0Token, currentOrder?.orderId],
+        () => flowersApiClient?.getOrderItems(auth0Token!, currentOrder!.orderId).then(data => data.data),
+        {
+            refetchOnMount: false,
+            refetchOnWindowFocus: false,
+            suspense: true,
+            enabled: !!currentOrder && !!auth0Token && !!flowersApiClient
+        }
     );
 };
 
@@ -195,8 +217,25 @@ export const useDeleteOrder = () => {
 export const useUpdateOrder = () => {
     const token = useAuth0Token();
     const flowersApiClient = useFlowersApiClient();
+    const orders = useOrders();
     return useMutation({
         mutationFn: (order: Order) => token && flowersApiClient ?
-            flowersApiClient.updateOrder(token, order) : Promise.reject("No client"),
+            flowersApiClient.updateOrder(token, order).then(() => orders.refetch()) : Promise.reject("No client"),
+    });
+};
+
+export const useCreateItem = () => {
+    const flowersApiClient = useFlowersApiClient();
+    const auth0Token = useAuth0Token();
+    const itemsQuery = useItemsQuery(false);
+    const navigate = useNavigate();
+    return useMutation({
+        mutationFn: (item: UploadItem) => flowersApiClient && auth0Token ?
+            flowersApiClient.createItem(auth0Token, item).then(
+                (data) => {
+                    itemsQuery.refetch();
+                    navigate(`/flowers/${data.data.data.itemId}`);
+                }
+            ) : Promise.reject("No client"),
     });
 };
