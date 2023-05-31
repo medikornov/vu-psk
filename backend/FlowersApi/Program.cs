@@ -63,6 +63,13 @@ var builder = WebApplication.CreateBuilder(args);
             options.Audience = builder.Configuration["Auth0:Audience"];
         });
 
+    services.AddAuthorization(options =>
+    {
+        options.AddPolicy("CreateItem", policy => policy.RequireClaim("permissions", "create:item"));
+        options.AddPolicy("UpdateItem", policy => policy.RequireClaim("permissions", "update:item"));
+        options.AddPolicy("DeleteItem", policy => policy.RequireClaim("permissions", "delete:item"));
+    });
+
     // configure DI for application services
     services.AddScoped<IItemService, ItemService>();
     services.AddScoped<ICustomerService, CustomerService>();

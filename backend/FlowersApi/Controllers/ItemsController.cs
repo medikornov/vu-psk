@@ -2,6 +2,7 @@
 using FlowersApi.Models.ItemDtos;
 using FlowersApi.Services.ItemService;
 using FlowersApi.Wrappers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlowersApi.Controllers
@@ -53,6 +54,7 @@ namespace FlowersApi.Controllers
 
         [HttpPost]
         [Consumes("multipart/form-data")]
+        [Authorize(Policy = "CreateItem")]
         [ProducesResponseType(typeof(Response<ItemResponseDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> CreateAsync([FromForm] CreateItemDto dto)
         {
@@ -70,6 +72,7 @@ namespace FlowersApi.Controllers
 
         [HttpPut("{itemId}")]
         [Consumes("multipart/form-data")]
+        [Authorize(Policy = "UpdateItem")]
         [ProducesResponseType(typeof(Response<ItemResponseDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateAsync([FromRoute]Guid itemId, [FromForm]UpdateItemDto dto)
         {
@@ -86,6 +89,7 @@ namespace FlowersApi.Controllers
         }
 
         [HttpDelete("{itemId}")]
+        [Authorize(Policy = "DeleteItem")]
         public async Task<IActionResult> DeleteAsync([FromRoute] Guid itemId)
         {
             try
