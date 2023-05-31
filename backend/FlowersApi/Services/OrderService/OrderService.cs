@@ -150,17 +150,30 @@ namespace FlowersApi.Services.OrderService
         [LoggingAspect]
         public async Task DeleteAsync(Guid orderId)
         {
-            try
+            using(var transaction = await _repository.BeginTransactionAsync())
             {
-                var order = await GetOrderAsync(orderId);
+                try
+                {
+                    var order = await GetOrderAsync(orderId);
 
-                _repository.Orders.Delete(order);
-                await _repository.SaveAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(44405, ex, "OrderService DeleteAsync caused an exception");
-                throw;
+                    var orderItems = await _repository.OrderItems.GetAllByOrderIdAsync(orderId);
+
+                    foreach (var orderItem in orderItems)
+                    {
+                        _repository.OrderItems.Delete(orderItem);
+                    }
+
+                    _repository.Orders.Delete(order);
+                    await _repository.SaveAsync();
+
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    _logger.LogError(44405, ex, "OrderService DeleteAsync caused an exception");
+                    throw;
+                }
             }
         }
 
