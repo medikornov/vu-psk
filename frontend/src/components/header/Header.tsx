@@ -37,6 +37,7 @@ export const Header = () => {
                 <Button text={"Flowers"} onClick={() => navigate({ pathname: "/flowers" })} />
                 {auth.isAuthenticated && <Button text={"Upload Flowers"} onClick={() => navigate({ pathname: "/upload-flowers" })} />}
                 {auth.isAuthenticated && <Button text={"My Flowers"} onClick={() => navigate({ pathname: "/my-flowers" })} />}
+                {auth.isAuthenticated && <Button text={"My Orders"} onClick={() => navigate({ pathname: "/my-orders" })} />}
                 <Button text={"About Us"} onClick={() => navigate({ pathname: "/about" })} />
                 <AuthButton />
             </div>
