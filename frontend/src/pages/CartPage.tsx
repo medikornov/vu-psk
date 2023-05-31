@@ -1,49 +1,81 @@
-import React from "react";
+import React, { Suspense, useState } from "react";
 import { Header } from "../components/header/Header";
 import { OrderItem } from "../clients/FlowersApiClient";
-import { useQuery } from "react-query";
-import { useFlowersApiClient } from "../clients/FlowersApiProvider";
-import { useAuth0Token, useCurrentOrder } from "../clients/hook";
+import { useCurrentOrder, useDeleteOrder, useDeleteOrderItem, useOrderItems, useOrderItemsQuery, useUpdateOrderItem } from "../clients/hook";
 import "./CartPage.scss";
 import { Button } from "../components/buttons/Button";
+import { Spinner } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
-const useOrderItems = () => {
-    const auth0Token = useAuth0Token();
-    const flowersApiClient = useFlowersApiClient();
-    const currentOrder = useCurrentOrder();
+const OrderItemCard = ({ orderItem: initialOrderItem }: { orderItem: OrderItem; }) => {
+    const deleteOrderItem = useDeleteOrderItem();
 
-    const orderItems = useQuery(["orderItems", !!auth0Token, !!currentOrder, currentOrder?.orderId],
-        () => currentOrder && auth0Token && flowersApiClient ?
-            flowersApiClient?.getOrderItems(auth0Token, currentOrder.orderId).then(data => data.data) : undefined,
-        { refetchOnMount: false, refetchOnWindowFocus: false }
-    );
-    return orderItems.data?.data ?? [];
-};
+    const [orderItem, setOrderItem] = useState<OrderItem>(initialOrderItem);
+    const updateOrder = useUpdateOrderItem();
+    const navigate = useNavigate();
+    const orderItemsQuery = useOrderItemsQuery();
 
-const OrderItemCard = ({ orderItem }: { orderItem: OrderItem; }) => {
+    const changeQuantity = (inc: boolean) => {
+        if (orderItem.quantity === 0 && !inc && deleteOrderItem.isLoading)
+            return;
+        if (inc) {
+            const newItem: OrderItem = { ...orderItem, quantity: orderItem.quantity + 1 };
+            setOrderItem(newItem);
+            updateOrder.mutate(newItem, {
+                onSuccess: () => orderItemsQuery.refetch()
+            });
+        } else {
+            const newItem: OrderItem = { ...orderItem, quantity: orderItem.quantity - 1 };
+            setOrderItem(newItem);
+            updateOrder.mutate(newItem, {
+                onSuccess: () => orderItemsQuery.refetch()
+            });
+        }
+    };
+
     return (
         <div className="flowers-cart-page-body-text">
             <div className="flowers-cart-page-body-img">
-            <img
-                src={`data:${orderItem.item.photoContentType};base64,${orderItem.item.photoContent}`}
-                alt={orderItem.item.photoName}
+                <img
+                    src={`data:${orderItem.item.photoContentType};base64,${orderItem.item.photoContent}`}
+                    alt={orderItem.item.photoName}
                 />
             </div>
-            {orderItem.item.name}
+            <div style={{ cursor: "pointer" }} onClick={() => navigate(`/flowers/${orderItem.itemId}`)}>{orderItem.item.name}</div>
             <div className="flowers-cart-page-body-price">
                 {orderItem.item.price + "$"}
             </div>
             <div className="flowers-cart-page-body-quantity">
-                {"x"+orderItem.quantity}
+                <Button
+                    text={"-"}
+                    className="flowers-cart-page-body-quantity-button"
+                    onClick={() => changeQuantity(false)} />
+                <div style={{ paddingTop: 5 }}>{orderItem.quantity}</div>
+                <Button
+                    text={"+"}
+                    className="flowers-cart-page-body-quantity-button"
+                    onClick={() => changeQuantity(true)} />
             </div>
-            <Button text="x" className ="btn-delete-order-item"/>
+            <Button disabled={deleteOrderItem.isLoading}
+                text="x"
+                className="btn-delete-order-item"
+                onClick={() => deleteOrderItem.mutate(orderItem.orderItemId)} />
         </div>
     );
 };
 
-export const CartPage = () => {
+export const OrderItems = () => {
     const orderItems = useOrderItems();
+    return <>{
+        orderItems.map((orderItem: OrderItem) => {
+            return <OrderItemCard orderItem={orderItem} />;
+        })
+    }</>;
+};
 
+export const CartPage = () => {
+    const currentOrder = useCurrentOrder();
+    const deleteOrder = useDeleteOrder();
     return (
         <div className='global'>
             <div className="flowers-cart-page">
@@ -52,15 +84,27 @@ export const CartPage = () => {
                     <div className="flowers-cart-page-body-title">
                         Cart
                     </div>
-                    {
-                        orderItems.map((orderItem: OrderItem) => {
-                            return <OrderItemCard orderItem={orderItem} />;
-                        })
-                    }
+                    <Suspense fallback={
+                        <div className="flowers-cart-page-spinner">
+                            <Spinner animation="border" role="status" />
+                        </div>
+                    }>
+                        <OrderItems />
+                    </Suspense>
                 </div>
                 <div className="buttons-container">
-                    <Button text={"Cancel"} className="btn-add-to-cart" />
-                    <Button text={"Order"} className="btn-add-to-cart" />
+                    {currentOrder && <>
+                        <Button text={"Cancel"}
+                            className="btn-add-to-cart"
+                            disabled={deleteOrder.isLoading}
+                            onClick={() => {
+                                // not working
+                                deleteOrder.mutate(currentOrder!.orderId, {
+                                    onSuccess: () => { }
+                                });
+                            }} />
+                        <Button text={"Order"} className="btn-add-to-cart" />
+                    </>}
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense } from "react";
 import { Header } from "../components/header/Header";
 import "./FlowersPage.scss";
 import { ItemCard } from "../components/cards/Card";
@@ -25,11 +25,9 @@ export const FlowersPage = () => {
                     Flowers
                 </div>
                 <Suspense fallback={
-                    <>
-                        <div className="flowers-page-spinner">
-                            <Spinner animation="border" role="status" />
-                        </div>
-                    </>
+                    <div className="flowers-page-spinner">
+                        <Spinner animation="border" role="status" />
+                    </div>
                 }>
                     <Items />
                 </Suspense>

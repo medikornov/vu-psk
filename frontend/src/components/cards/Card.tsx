@@ -6,7 +6,8 @@ import { Button } from "../buttons/Button";
 import React, { useState } from "react";
 import { useFlowersApiClient } from "../../clients/FlowersApiProvider";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useAuth0Token, useCurrentOrder, useItem } from "../../clients/hook";
+import { useAuth0Token, useCurrentOrder, useItem, useOrderItemsQuery } from "../../clients/hook";
+import { useQueryClient } from "react-query";
 
 interface ItemCard {
     title: string;
@@ -19,7 +20,7 @@ export const AddToCart = ({ item }: { item: Item; }) => {
     const currentOrder = useCurrentOrder();
     const flowersApiClient = useFlowersApiClient();
     const auth0Token = useAuth0Token();
-
+    const orderItemsQuery = useOrderItemsQuery();
     const [canAdd, setCanAdd] = useState(true);
 
     return (
@@ -28,7 +29,9 @@ export const AddToCart = ({ item }: { item: Item; }) => {
                 if (auth0Token) {
                     if (currentOrder) {
                         setCanAdd(false);
-                        flowersApiClient?.addItemToOrder(auth0Token, currentOrder.orderId, item.itemId, 1, 1).then(() => setCanAdd(true));
+                        flowersApiClient?.addItemToOrder(auth0Token, currentOrder.orderId, item.itemId, 1, 1)
+                            .then(() => setCanAdd(true))
+                            .then(() => orderItemsQuery.refetch());
                     }
                 }
                 else

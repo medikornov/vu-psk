@@ -6,7 +6,7 @@ import { Header } from "../components/header/Header";
 import "./FlowerDetailsPage.scss";
 import { Button } from "../components/buttons/Button";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useAuth0Token, useCurrentOrder, useItem } from "../clients/hook";
+import { useAuth0Token, useCurrentOrder, useItem, useOrderItemsQuery } from "../clients/hook";
 import { Footer } from "../components/footer/Footer";
 import { IoIosRose } from 'react-icons/io';
 
@@ -15,7 +15,7 @@ const AddToCart = ({ item }: { item: Item; }) => {
     const currentOrder = useCurrentOrder();
     const flowersApiClient = useFlowersApiClient();
     const auth0Token = useAuth0Token();
-
+    const orderItemsQuery = useOrderItemsQuery();
     const [canAdd, setCanAdd] = useState(true);
 
     return (
@@ -24,7 +24,9 @@ const AddToCart = ({ item }: { item: Item; }) => {
                 if (auth0Token) {
                     if (currentOrder) {
                         setCanAdd(false);
-                        flowersApiClient?.addItemToOrder(auth0Token, currentOrder.orderId, item.itemId, 1, 1).then(() => setCanAdd(true));
+                        flowersApiClient?.addItemToOrder(auth0Token, currentOrder.orderId, item.itemId, 1, 1)
+                            .then(() => setCanAdd(true))
+                            .then(() => orderItemsQuery.refetch());
                     }
                 }
                 else
