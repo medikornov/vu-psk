@@ -78,6 +78,12 @@ namespace FlowersApi.Services.OrderService
 
                 var orderCustomer = await GetCustomerAsync((Guid)order.CustomerId!);
 
+                // Check if there are any customer order started
+                if (await _repository.Orders.AnyAsync(o => o.CustomerId == order.CustomerId && o.Status == OrderStatus.Created))
+                {
+                    throw new AppException($"Customer {orderCustomer.FirstName} {orderCustomer.LastName} already has an order created.");
+                }
+
                 _repository.Orders.Add(order);
                 await _repository.SaveAsync();
 

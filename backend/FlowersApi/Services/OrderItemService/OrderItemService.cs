@@ -68,10 +68,18 @@ namespace FlowersApi.Services.OrderItemService
                     throw new InvalidOperationException("No order id provided.");
                 }
 
+                //Check if items exists for orderItem
+                if (dto.ItemId == null)
+                {
+                    throw new InvalidOperationException("No item id provided.");
+                }
+
                 var order = await GetOrderAsync((Guid)orderItem.OrderId!);
 
                 // Check if order item already exists
                 var orderItems = await GetAllByOrderIdAsync(order.OrderId);
+
+                await RecalculateOrderTotalAsync(order, orderItems, dto.Quantity, dto.ItemId);
 
                 if (orderItems != null && orderItems.Any())
                 {
@@ -90,12 +98,6 @@ namespace FlowersApi.Services.OrderItemService
                 }
 
                 orderItem.OrderItemId = Guid.NewGuid();
-
-                //Check if items exists for orderItem
-                if (dto.ItemId == null)
-                {
-                    throw new InvalidOperationException("No item id provided.");
-                }
 
                 // Check if item exists
                 var item = await GetItemAsync((Guid)orderItem.ItemId!);
@@ -118,9 +120,22 @@ namespace FlowersApi.Services.OrderItemService
             try
             {
                 var orderItem = await GetOrderItemAsync(orderItemId);
+                var order = await GetOrderAsync((Guid)orderItem.OrderId!);
 
                 _mapper.Map(dto, orderItem);
                 _repository.OrderItems.Update(orderItem);
+
+                var orderItems = await GetAllByOrderIdAsync(order.OrderId);
+                decimal? total = 0;
+
+                foreach (var orderItemInOrder in orderItems)
+                {
+                    total += orderItemInOrder.Item!.Price * orderItemInOrder.Quantity;
+                }
+
+                order.OrderTotal = total;
+                _repository.Orders.Update(order);
+
                 await _repository.SaveAsync();
 
                 return _mapper.Map<OrderItemResponseDto>(orderItem);
@@ -182,6 +197,22 @@ namespace FlowersApi.Services.OrderItemService
             }
 
             return item;
+        }
+
+        private async Task RecalculateOrderTotalAsync(Order order, IEnumerable<OrderItemResponseDto> orderItems, decimal? dtoQuantity, Guid? dtoItemId)
+        {
+            var dtoItem = await _repository.Items.FindAsync(dtoItemId!);
+            decimal? total = 0;
+
+            foreach (var orderItem in orderItems)
+            {
+                total += orderItem.Item!.Price * orderItem.Quantity;
+            }
+
+            total += dtoQuantity * dtoItem!.Price;
+
+            order.OrderTotal = total;
+            _repository.Orders.Update(order);
         }
     }
 }
