@@ -2,7 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQuery } from "react-query";
 import { useFlowersApiClient } from "./FlowersApiProvider";
 import { useEffect, useMemo, useState } from "react";
-import { OrderItem } from "./FlowersApiClient";
+import { Order, OrderItem } from "./FlowersApiClient";
 
 export const useAuth0Token = () => {
     const auth0 = useAuth0();
@@ -99,6 +99,12 @@ export const useCurrentOrder = () => {
     return currentOrder;
 };
 
+export const useMyOrders = () => {
+    // get only succeded orders
+    const orders = useOrders();
+    return orders.data ?? [];
+};
+
 export const useCustomerCreation = () => {
     const token = useAuth0Token();
     const auth0 = useAuth0();
@@ -183,5 +189,14 @@ export const useDeleteOrder = () => {
     return useMutation({
         mutationFn: (orderId: string) => token && flowersApiClient ?
             flowersApiClient.deleteOrder(token, orderId) : Promise.reject("No client"),
+    });
+};
+
+export const useUpdateOrder = () => {
+    const token = useAuth0Token();
+    const flowersApiClient = useFlowersApiClient();
+    return useMutation({
+        mutationFn: (order: Order) => token && flowersApiClient ?
+            flowersApiClient.updateOrder(token, order) : Promise.reject("No client"),
     });
 };

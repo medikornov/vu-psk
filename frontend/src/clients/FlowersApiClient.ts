@@ -123,6 +123,14 @@ export default class FlowersApiClient {
         });
     }
 
+    public async updateOrder(token: string, order: Order) {
+        return axios.put<ApiResponse<Order>>(this.baseUrl + `/api/orders/${order.orderId}`, order, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+
     public async deleteOrder(token: string, orderId: string) {
         return axios.delete(this.baseUrl + `/api/orders/${orderId}`, {
             headers: {

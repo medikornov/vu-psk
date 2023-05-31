@@ -1,0 +1,23 @@
+.myorders-page {
+   .myorders-body {
+      .myorders-body-text-title {
+         padding-top: 10px;
+         padding-bottom: 20px;
+         color: white;
+         padding-left: 70px;
+         font-family: "Abhaya Libre";
+         font-weight: 400;
+         font-size: 40px;
+      }
+
+      .myorders-page-orders {
+         color: white;
+         text-align: justify;
+         padding-top: 40px;
+         display: inline-block;
+         width: 100%;
+         font-family: "Abel";
+         cursor: pointer;
+      }
+   }
+}
