@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Helpers;
+using FlowersApi.Helpers;
 using FlowersApi.Models.OrderDtos;
 using FlowersApi.Wrappers;
 using System.Diagnostics;
@@ -8,12 +9,16 @@ namespace FlowersApi.Services.OrderService
     public class OrderServiceLoggingDecorator : IOrderService
     {
         private readonly IOrderService _orderService;
-        private readonly ILogger<OrderServiceLoggingDecorator> _logger;
+        private static readonly ILogger _logger =
+            LoggerFactory.Create(builder =>
+            {
+                builder.AddConsole();
+                builder.AddApplicationInsights("4bbab67d-b131-4913-a6a1-912357f1de82");
+            }).CreateLogger<OrderServiceLoggingDecorator>();
 
-        public OrderServiceLoggingDecorator(IOrderService orderService, ILogger<OrderServiceLoggingDecorator> logger)
+        public OrderServiceLoggingDecorator(IOrderService orderService)
         {
             _orderService = orderService;
-            _logger = logger;
         }
 
         public async Task<PagedResponse<IEnumerable<OrderResponseDto>>> GetAllAsync(PaginationFilter filter)
