@@ -57,21 +57,27 @@ const UpdateFlower = ({ item: loadedItem }: { item: Item }) => {
                 <div className="update-page-body-title">
                     Update flower
                 </div>
+                <label className="update-page-body-label">Name:</label>
                 <input type="text" placeholder={"Name"} className="update-page-body-input" value={name} onChange={(e) => {
                     setName(e.target.value);
                 }} />
+                <label className="update-page-body-label">Description:</label>
                 <input type="text" placeholder={"Description"} className="update-page-body-input" value={description} onChange={(e) => {
                     setDescription(e.target.value);
                 }} />
+                <label className="update-page-body-label">Price:</label>
                 <input type="number" placeholder={"Price"} className="update-page-body-input" value={price} onChange={(e) => {
                     setPrice(parseInt(e.target.value));
                 }} />
+                <label className="update-page-body-label">Quantity:</label>
                 <input type="number" placeholder={"Quantity"} className="update-page-body-input" value={quantity} onChange={(e) => {
                     setQuantity(parseInt(e.target.value));
                 }} />
+                <label className="update-page-body-label">Weight:</label>
                 <input type="number" placeholder={"Weight"} className="update-page-body-input" value={weight} onChange={(e) => {
                     setWeight(parseInt(e.target.value));
                 }} />
+                <label className="update-page-body-label">Image:</label>
                 <input type="file" className="update-page-body-file-input" onChange={handleFileChange} />
                 <div>
                     {file && `${file.name} - ${file.type}`}
@@ -88,26 +94,31 @@ const UpdateFlower = ({ item: loadedItem }: { item: Item }) => {
 const CurrentFlower = ({ item }: { item: Item }) => {
     return (
         <>
-            <div className="update-page-body-text">
-                <div className="update-page-body-text-info">
-                    <span className="update-page-body-text-title">
-                        <IoIosRose />
-                        {item.name}
-                    </span>
-                    <span className="update-page-body-text-quantity"> Sale: {item.quantity}</span>
-                </div>
-                <div className="update-page-body-text-description">
-                    {item.description}
-                </div>
-                <div className="update-page-body-text-price">
-                    {item.price + "$"}
-                </div>
+            <div className="update-page-body-flower-title">
+                Your prepared flower!
             </div>
-            <div className="update-page-body-img">
-                <img
-                    src={`data:${item.photoContentType};base64,${item.photoContent}`}
-                    alt={item.photoName}
-                />
+            <div className="update-page-container">
+                <div className="update-page-body-text">
+                    <div className="update-page-body-text-info">
+                        <span className="update-page-body-text-title">
+                            <IoIosRose />
+                            {item.name}
+                        </span>
+                        <span className="update-page-body-text-quantity"> Sale: {item.quantity}</span>
+                    </div>
+                    <div className="update-page-body-text-description">
+                        {item.description}
+                    </div>
+                    <div className="update-page-body-text-price">
+                        {item.price + "$"}
+                    </div>
+                </div>
+                <div className="update-page-body-img">
+                    <img
+                        src={`data:${item.photoContentType};base64,${item.photoContent}`}
+                        alt={item.photoName}
+                    />
+                </div>
             </div>
         </>
     );

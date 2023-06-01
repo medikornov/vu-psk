@@ -37,6 +37,11 @@ export const AboutPage = () => {
                             <img src={'./profile.jpg'} alt="yesterday" className="circle-image" />
                         </div>
                     </div>
+                    <div className="about-page-body-image">
+                        <div className="circle-container">
+                            <img src={'./profile.jpg'} alt="yesterday" className="circle-image" />
+                        </div>
+                    </div>
                 </div>
                 <ToastMessage />
                 <Footer />
