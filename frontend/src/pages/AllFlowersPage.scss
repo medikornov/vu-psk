@@ -1,28 +1,56 @@
 .allflowers-page {
-   .allflowers-page-body {
-      color: white;
-      .allflowers-page-body-text {
-         padding-top: 10px;
-         padding-bottom: 20px;
-         color: white;
-         padding-left: 70px;
-         font-family: "Abhaya Libre";
-         font-weight: 400;
-         font-size: 40px;
-      }
+    .allflowers-page-body {
+        color: white;
+        padding-left: 70px;
+        width: 900px;
 
-      .allflowers-page-spinner {
-         display: flex;
-         justify-content: center;
-         align-items: center;
-         height: auto;
-         height: 50vh;
+        .allflowers-page-body-text {
+            padding-top: 10px;
+            padding-bottom: 20px;
+            color: white;
+            font-family: "Abhaya Libre";
+            font-weight: 400;
+            font-size: 40px;
+        }
 
-         .spinner-border {
+        table {
+            color: white;
+            text-align: justify;
+            padding-top: 40px;
+            width: 100%;
+            font-family: "Abel";
+            border-collapse: collapse;
+
+            th,
+            td {
+                padding: 8px;
+                border: 1px solid white;
+                background-color: #222121;
+                text-align: center;
+            }
+
+            th {
+                background-color: #333;
+                color: white;
+            }
+
+            td span {
+                cursor: pointer;
+            }
+        }
+    }
+
+    .allflowers-page-spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: auto;
+        height: 50vh;
+
+        .spinner-border {
             color: white;
             --bs-spinner-width: 10rem;
             --bs-spinner-height: 10rem;
-         }
-      }
-   }
+        }
+    }
 }

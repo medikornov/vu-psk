@@ -10,18 +10,34 @@ import { useNavigate } from "react-router-dom";
 const Items = () => {
     const items = useItems();
     const navigate = useNavigate();
-    return (<>
-        {
-            items.map((item: Item) => {
-                return (
-                    <div className="allflowers-page-body-item">
-                        <span onClick={() => navigate("/all-flowers/" + item.itemId)} style={{cursor: "pointer"}}>{item.itemId}</span>:   {item.name}
-                    </div>
-                );
-            })
-        }
-    </>)
-}
+
+    return (
+        <table className="allflowers-page-body">
+            <thead>
+                <tr>
+                    <th>Item ID</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                {items.map((item) => (
+                    <tr key={item.itemId}>
+                        <td>
+                            <span
+                                onClick={() => navigate("/all-flowers/" + item.itemId)}
+                                style={{ cursor: "pointer" }}
+                            >
+                                {item.itemId}
+                            </span>
+                        </td>
+                        <td>{item.name}</td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    );
+};
+
 
 export const AllFlowersPage = () => {
     return (
