@@ -1,0 +1,119 @@
+.update-page {
+    .update-page-body {
+        .update-page-body-title {
+            padding-top: 10px;
+            padding-bottom: 20px;
+            color: white;
+            padding-left: 70px;
+            font-family: "Abhaya Libre";
+            font-weight: 400;
+            font-size: 40px;
+        }
+
+        .update-page-body-input {
+            display: block;
+            margin-bottom: 20px;
+            margin-left: 70px;
+            width: 600px;
+            font-size: 16px;
+            border-radius: 10px;
+        }
+
+        .update-page-body-button {
+            display: flex;
+            padding-top: 10px;
+            padding-left: 250px;
+            align-self: center;
+
+
+            button {
+                background-color: white;
+                color: black;
+                width: 220px;
+                border-radius: 20px;
+                border: none;
+            }
+        }
+
+        .update-page-body-file-input {
+            display: block;
+            background-color: white;
+            margin-bottom: 20px;
+            width: 600px;
+            height: 50px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            margin-left: 70px;
+        }
+    
+        .update-page-body-text {
+            display: flex;
+            flex-direction: column;
+            padding-left: 50px;
+            width: 700px;
+        }
+    
+        .update-page-body-text-title {
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 60px;
+            text-align: center;
+            padding-top: 70px;
+            width: 100%;
+            font-family: "Abel";
+            padding-right: 10px;
+        }
+    
+    
+        .update-page-body-text-quantity {
+            color: #e8e8e8;
+            vertical-align: top;
+            padding-right: 10px;
+            padding-left: 10px;
+            text-align: center;
+            font-family: "Abhaya Libre Medium";
+            font-size: 15px;
+            border: 2px solid white;
+            width: 120px;
+        }
+    
+        .update-page-body-text-price {
+            color: #e8e8e8;
+            align-self: center;
+            padding-right: 10px;
+            padding-left: 10px;
+            text-align: center;
+            font-family: "Abhaya Libre Medium";
+            font-size: 50px;
+        }
+    
+        .update-page-body-text-description {
+            color: #e8e8e8;
+            text-align: justify;
+            padding-top: 50px;
+            font-family: "Abhaya Libre Medium";
+            font-size: 25px;
+            text-align: center;
+        }
+    
+        .update-page-body-img {
+            margin-top: 70px;
+            margin-left: 200px;
+            width: 200px;
+            height: 200px;
+            border: 5px solid #ffffff;
+            border-radius: 50px;
+            overflow: hidden;
+        }
+    
+        .update-page-body-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+}

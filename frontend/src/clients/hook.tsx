@@ -2,7 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQuery } from "react-query";
 import { useFlowersApiClient } from "./FlowersApiProvider";
 import { useEffect, useMemo, useState } from "react";
-import { Item, Order, OrderItem, UploadItem } from "./FlowersApiClient";
+import { Item, Order, OrderItem, UpdateItem, UploadItem } from "./FlowersApiClient";
 import { useNavigate } from "react-router-dom";
 
 export const useAuth0Token = () => {
@@ -25,12 +25,20 @@ export const useItems = () => {
     return items.data?.data || [];
 };
 
-export const useItem = (id?: string) => {
+const useItemQuery = (id?: string) => {
     const flowersApiClient = useFlowersApiClient();
-    const item = useQuery(
+    return useQuery(
         ['item', !!flowersApiClient, id],
-        () => id ? flowersApiClient?.getItem(id).then(response => response.data.data) : undefined
+        () => id ? flowersApiClient?.getItem(id).then(response => response.data.data) : undefined,
+        {
+            refetchOnMount: false,
+            refetchOnWindowFocus: false
+        }
     );
+}
+
+export const useItem = (id?: string) => {
+    const item = useItemQuery(id)
     return item.data;
 };
 
@@ -239,3 +247,15 @@ export const useCreateItem = () => {
             ) : Promise.reject("No client"),
     });
 };
+
+export const useUpdateItem = (id: string) => {
+    const flowersApiClient = useFlowersApiClient();
+    const auth0Token = useAuth0Token();
+    const itemQuery = useItemQuery(id);
+    return useMutation({
+        mutationFn: (item: UpdateItem) => flowersApiClient && auth0Token ?
+            flowersApiClient.updateFlowerItem(auth0Token, id, item).then(() => {
+                itemQuery.refetch();
+            }) : Promise.reject("No client")
+    })
+}
