@@ -77,6 +77,12 @@ var builder = WebApplication.CreateBuilder(args);
     services.AddScoped<IOrderService, OrderService>();
     services.AddScoped<IOrderItemService, OrderItemService>();
     services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+
+    // Decorate order service with stopwatch logging
+    if (Convert.ToBoolean(builder.Configuration["EnableStopwatchLogging"]))
+    {
+        services.Decorate<IOrderService, OrderServiceLoggingDecorator>();
+    }
 }
 
 var app = builder.Build();
