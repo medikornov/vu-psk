@@ -2,6 +2,7 @@ import React from "react";
 import { Header } from "../components/header/Header";
 import "./AboutPage.scss";
 import { Footer } from "../components/footer/Footer";
+import { ToastMessage } from "../components/toasts/Toast";
 
 const temporaryTitleText = "About us";
 const temporaryAboutText = "Our online flower shop aims to revolutionize the concept of flower purchasing by providing a seamless and personalized experience for our customers. We have created a platform that offers a wide range of high-quality flowers, tailored to each customer's preferences and occasions. Customers will be able to easily browse our website and choose from various options that suit their unique tastes, budget, and events.";
@@ -37,7 +38,8 @@ export const AboutPage = () => {
                         </div>
                     </div>
                 </div>
-                <Footer/>
+                <ToastMessage />
+                <Footer />
             </div>
         </div>
     );

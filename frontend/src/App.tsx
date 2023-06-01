@@ -15,6 +15,7 @@ import { UploadFlowersPage } from "./pages/UploadFlowersPage";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { MyFlowersPage } from "./pages/MyFlowersPage";
 import { MyOrdersPage } from "./pages/MyOrdersPage";
+import { OrderSuccess } from "./pages/OrderSuccess";
 
 const domain = process.env.AUTHZERO_DOMAIN ?? "";
 const clientId = process.env.AUTHZERO_CLIENTID ?? "";
@@ -56,6 +57,7 @@ export const App = () => {
                         <Route path="/upload-flowers" element={<UploadFlowersPage />} />
                         <Route path="/my-flowers" element={<MyFlowersPage />} />
                         <Route path="/my-orders" element={<MyOrdersPage />} />
+                        <Route path="/order-success" element={<OrderSuccess />} />
                      </Routes>
                   </BrowserRouter>
                </UserManagementProvider>

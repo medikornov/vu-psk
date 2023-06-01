@@ -5,6 +5,7 @@ import { ItemCard } from "../components/cards/Card";
 import { useItems } from "../clients/hook";
 import { Spinner } from "react-bootstrap";
 import "./FlowerDetailsPage.scss";
+import { ToastMessage } from "../components/toasts/Toast";
 
 const Items = () => {
     const items = useItems();
@@ -32,6 +33,7 @@ export const FlowersPage = () => {
                     <Items />
                 </Suspense>
             </div>
+            <ToastMessage />
         </div>
 
     );
