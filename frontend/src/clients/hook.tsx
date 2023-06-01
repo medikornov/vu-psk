@@ -35,10 +35,10 @@ const useItemQuery = (id?: string) => {
             refetchOnWindowFocus: false
         }
     );
-}
+};
 
 export const useItem = (id?: string) => {
-    const item = useItemQuery(id)
+    const item = useItemQuery(id);
     return item.data;
 };
 
@@ -165,7 +165,7 @@ export const useCustomerCreation = () => {
     }, [userState, token, flowersApiClient, auth0]);
 };
 
-export const useOrderItemsQuery = () => {
+export const useOrderItemsQuery = (suspense = true) => {
     const auth0Token = useAuth0Token();
     const flowersApiClient = useFlowersApiClient();
     const currentOrder = useCurrentOrder();
@@ -176,14 +176,30 @@ export const useOrderItemsQuery = () => {
         {
             refetchOnMount: false,
             refetchOnWindowFocus: false,
-            suspense: true,
+            suspense: suspense,
             enabled: !!currentOrder && !!auth0Token && !!flowersApiClient
         }
     );
 };
 
-export const useOrderItems = () => {
-    const orderItems = useOrderItemsQuery();
+export const useOrderItemsById = (id?: string) => {
+    const auth0Token = useAuth0Token();
+    const flowersApiClient = useFlowersApiClient();
+
+    return useQuery(
+        ["orderItems", !!auth0Token, id],
+        () => flowersApiClient?.getOrderItems(auth0Token!, id!).then(data => data.data),
+        {
+            refetchOnMount: false,
+            refetchOnWindowFocus: false,
+            suspense: true,
+            enabled: !!id && !!auth0Token && !!flowersApiClient
+        }
+    );
+};
+
+export const useOrderItems = (suspesne = true) => {
+    const orderItems = useOrderItemsQuery(suspesne);
     return orderItems.data?.data ?? [];
 };
 
@@ -257,5 +273,32 @@ export const useUpdateItem = (id: string) => {
             flowersApiClient.updateFlowerItem(auth0Token, id, item).then(() => {
                 itemQuery.refetch();
             }) : Promise.reject("No client")
-    })
-}
+    });
+};
+
+export const useAllOrders = () => {
+    const token = useAuth0Token();
+    const flowersApiClient = useFlowersApiClient();
+    const query = useQuery(
+        ["allOrders", !!token],
+        () => flowersApiClient?.getAllOrders(token!).then(data => data.data),
+        {
+            refetchOnMount: false,
+            refetchOnWindowFocus: false,
+            enabled: !!token && !!flowersApiClient
+        }
+    );
+    return query.data?.data ?? [];
+};
+
+export const useDeleteItem = () => {
+    const flowersApiClient = useFlowersApiClient();
+    const auth0Token = useAuth0Token();
+    const itemsQuery = useItemsQuery(false);
+    return useMutation({
+        mutationFn: (itemId: string) => flowersApiClient && auth0Token ?
+            flowersApiClient.deleteItem(auth0Token, itemId).then(() => {
+                itemsQuery.refetch();
+            }) : Promise.reject("No client")
+    });
+};

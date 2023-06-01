@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { Header } from "../components/header/Header";
 import { ToastMessage } from "../components/toasts/Toast";
-import { useItems } from "../clients/hook";
+import { useDeleteItem, useItems } from "../clients/hook";
 import { Item } from "../clients/FlowersApiClient";
 import "./AllFlowersPage.scss";
 import { Spinner } from "react-bootstrap";
@@ -10,13 +10,14 @@ import { useNavigate } from "react-router-dom";
 const Items = () => {
     const items = useItems();
     const navigate = useNavigate();
-
+    const deleteItem = useDeleteItem();
     return (
         <table className="allflowers-page-body">
             <thead>
                 <tr>
                     <th>Item ID</th>
                     <th>Name</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -31,6 +32,9 @@ const Items = () => {
                             </span>
                         </td>
                         <td>{item.name}</td>
+                        <td style={{ color: "red", cursor: "pointer" }} onClick={() => {
+                            deleteItem.mutate(item.itemId);
+                        }}>X</td>
                     </tr>
                 ))}
             </tbody>
