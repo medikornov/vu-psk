@@ -54,6 +54,7 @@ export interface Item {
     photoName: string;
     photoContentType: string;
     weight: number;
+    version: string;
 }
 
 export interface UploadItem {
@@ -64,6 +65,18 @@ export interface UploadItem {
     price: number;
     photo: File;
     weight: number;
+}
+
+export interface UpdateItem {
+    name: string;
+    description: string;
+    quantity: number;
+    quantityType: QuantityType;
+    price: number;
+    photo?: File;
+    weight: number;
+    version: string;
+    isOverride: boolean
 }
 
 const baseUrl = process.env.FLOWERSAPI_BASEURL;
@@ -172,6 +185,15 @@ export default class FlowersApiClient {
                 Authorization: `Bearer ${token}`
             }
         });
+    }
+
+    public async updateFlowerItem(token: string, itemId: string, item: UpdateItem) {
+        return axios.put(this.baseUrl + `/api/items/${itemId}`, item, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data; boundary=----",
+            }
+        })
     }
 
 }

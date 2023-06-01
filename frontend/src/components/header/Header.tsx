@@ -43,7 +43,7 @@ export const Header = () => {
                 {auth.isAuthenticated && hasAdminAccess &&
                     <Button text={"Upload Flowers"} onClick={() => navigate({ pathname: "/upload-flowers" })} />}
                 {auth.isAuthenticated && hasAdminAccess &&
-                    <Button text={"My Flowers"} onClick={() => navigate({ pathname: "/my-flowers" })} />}
+                    <Button text={"All Flowers"} onClick={() => navigate({ pathname: "/all-flowers" })} />}
                 {auth.isAuthenticated && !hasAdminAccess &&
                     <Button text={"My Orders"} onClick={() => navigate({ pathname: "/my-orders" })} />}
                 <Button text={"About Us"} onClick={() => navigate({ pathname: "/about" })} />

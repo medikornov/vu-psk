@@ -1,0 +1,28 @@
+.allflowers-page {
+   .allflowers-page-body {
+      color: white;
+      .allflowers-page-body-text {
+         padding-top: 10px;
+         padding-bottom: 20px;
+         color: white;
+         padding-left: 70px;
+         font-family: "Abhaya Libre";
+         font-weight: 400;
+         font-size: 40px;
+      }
+
+      .allflowers-page-spinner {
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         height: auto;
+         height: 50vh;
+
+         .spinner-border {
+            color: white;
+            --bs-spinner-width: 10rem;
+            --bs-spinner-height: 10rem;
+         }
+      }
+   }
+}
