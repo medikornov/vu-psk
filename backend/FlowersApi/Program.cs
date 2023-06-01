@@ -5,6 +5,7 @@ using FlowersApi.Services.CustomerService;
 using FlowersApi.Services.ItemService;
 using FlowersApi.Services.OrderItemService;
 using FlowersApi.Services.OrderService;
+using FlowersApi.Services.OrderTotalStrategy;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -77,6 +78,16 @@ var builder = WebApplication.CreateBuilder(args);
     services.AddScoped<IOrderService, OrderService>();
     services.AddScoped<IOrderItemService, OrderItemService>();
     services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+
+    // Strategy pattern
+    if (Convert.ToBoolean(builder.Configuration["EnableTaxStrategy"]))
+    {
+        services.AddScoped<ITaxStrategy, CountryTaxStrategy>();
+    }
+    else
+    {
+        services.AddScoped<ITaxStrategy, NoTaxStrategy>();
+    }
 
     // Decorate order service with stopwatch logging
     if (Convert.ToBoolean(builder.Configuration["EnableStopwatchLogging"]))

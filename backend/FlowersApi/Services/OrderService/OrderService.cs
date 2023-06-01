@@ -6,6 +6,7 @@ using DataAccessLayer.Repositories.RepositoryWrapper;
 using FlowersApi.Helpers;
 using FlowersApi.Models.OrderDtos;
 using FlowersApi.Services.OrderItemService;
+using FlowersApi.Services.OrderTotalStrategy;
 using FlowersApi.Wrappers;
 
 namespace FlowersApi.Services.OrderService
@@ -14,13 +15,15 @@ namespace FlowersApi.Services.OrderService
     {
         private readonly IRepositoryWrapper _repository;
         private readonly IOrderItemService _orderItemService;
+        private readonly ITaxStrategy _taxStrategy;
         private readonly IMapper _mapper;
         private readonly ILogger<OrderService> _logger;
 
-        public OrderService(IRepositoryWrapper repository, IOrderItemService orderItemService, IMapper mapper, ILogger<OrderService> logger)
+        public OrderService(IRepositoryWrapper repository, IOrderItemService orderItemService, ITaxStrategy taxStrategy, IMapper mapper, ILogger<OrderService> logger)
         {
             _repository = repository;
             _orderItemService = orderItemService;
+            _taxStrategy = taxStrategy;
             _mapper = mapper;
             _logger = logger;
         }
@@ -154,6 +157,9 @@ namespace FlowersApi.Services.OrderService
                             _repository.Items.Update(item);
                             await _repository.SaveAsync();
                         }
+
+                        // Update by strategy
+                        dto.OrderTotal = _taxStrategy.CalculateFinalTotal((decimal)order.OrderTotal!);
                     }
 
                     // Copy dto to order
