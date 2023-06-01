@@ -1,4 +1,5 @@
-﻿using FlowersApi.Models.OrderDtos;
+﻿using DataAccessLayer.Helpers;
+using FlowersApi.Models.OrderDtos;
 using FlowersApi.Models.OrderItemDtos;
 using FlowersApi.Services.OrderItemService;
 using FlowersApi.Services.OrderService;
@@ -24,6 +25,23 @@ namespace FlowersApi.Controllers
             _orderService = orderService;
             _orderItemService = orderItemService;
             _logger = logger;
+        }
+
+        [Authorize(Policy = "ReadOrders")]
+        [HttpGet]
+        [ProducesResponseType(typeof(PagedResponse<IEnumerable<OrderResponseDto>>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllAsync([FromQuery] PaginationFilter filter)
+        {
+            try
+            {
+                var orders = await _orderService.GetAllAsync(filter);
+                return Ok(orders);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(44500, ex, "OrdersController GetAllAsync caused an exception");
+                throw;
+            }
         }
 
         [Authorize]

@@ -6,6 +6,7 @@ namespace FlowersApi.Services.OrderService
 {
     public interface IOrderService
     {
+        Task<PagedResponse<IEnumerable<OrderResponseDto>>> GetAllAsync(PaginationFilter filter);
         Task<PagedResponse<IEnumerable<OrderResponseDto>>> GetAllByCustomerIdAsync(Guid customerId, PaginationFilter filter);
         Task<OrderResponseDto> GetByIdAsync(Guid orderId);
         Task<OrderResponseDto> CreateAsync(CreateOrderDto dto);

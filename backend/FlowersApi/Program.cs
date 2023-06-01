@@ -68,6 +68,7 @@ var builder = WebApplication.CreateBuilder(args);
         options.AddPolicy("CreateItem", policy => policy.RequireClaim("permissions", "create:item"));
         options.AddPolicy("UpdateItem", policy => policy.RequireClaim("permissions", "update:item"));
         options.AddPolicy("DeleteItem", policy => policy.RequireClaim("permissions", "delete:item"));
+        options.AddPolicy("ReadOrders", policy => policy.RequireClaim("permissions", "read:orders"));
     });
 
     // configure DI for application services
