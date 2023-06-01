@@ -26,6 +26,27 @@ namespace FlowersApi.Services.OrderService
         }
 
         [LoggingAspect]
+        public async Task<PagedResponse<IEnumerable<OrderResponseDto>>> GetAllAsync(PaginationFilter filter)
+        {
+            try
+            {
+                var orders = await _repository.Orders.GetAllAsync(filter);
+
+                double totalRecords = await _repository.Orders.CountAsync();
+                var totalPages = Math.Ceiling(totalRecords / filter.PageSize);
+
+                var orderResponses = _mapper.Map<IList<OrderResponseDto>>(orders);
+
+                return new PagedResponse<IEnumerable<OrderResponseDto>>(orderResponses, filter.PageNumber, filter.PageSize, (int)totalPages, (int)totalRecords);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(44401, ex, "OrderService GetAllAsync caused an exception");
+                throw;
+            }
+        }
+
+        [LoggingAspect]
         public async Task<PagedResponse<IEnumerable<OrderResponseDto>>> GetAllByCustomerIdAsync(Guid customerId, PaginationFilter filter)
         {
             try

@@ -10,6 +10,14 @@ namespace DataAccessLayer.Repositories.OrderRepository
     {
         public OrderRepository(DataContext dataContext) : base(dataContext) { }
 
+        public async Task<IEnumerable<Order>> GetAllAsync(PaginationFilter filter)
+        {
+            return await GetAll()
+                .Skip((filter.PageNumber - 1) * filter.PageSize)
+                .Take(filter.PageSize)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Order>> GetAllByCustomerIdAsync(Guid customerId, PaginationFilter filter)
         {
             return await GetAllByCondition(order => order.CustomerId == customerId)
