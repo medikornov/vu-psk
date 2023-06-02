@@ -182,7 +182,7 @@ export const useOrderItemsQuery = (suspense = true) => {
     );
 };
 
-export const useOrderItemsById = (id?: string) => {
+export const useOrderItemsById = (id?: string, suspense = false) => {
     const auth0Token = useAuth0Token();
     const flowersApiClient = useFlowersApiClient();
 
@@ -192,7 +192,7 @@ export const useOrderItemsById = (id?: string) => {
         {
             refetchOnMount: false,
             refetchOnWindowFocus: false,
-            suspense: true,
+            suspense: suspense,
             enabled: !!id && !!auth0Token && !!flowersApiClient
         }
     );
@@ -302,3 +302,15 @@ export const useDeleteItem = () => {
             }) : Promise.reject("No client")
     });
 };
+
+export const useOrderById = (id?: string) => {
+    const flowersApiClient = useFlowersApiClient();
+    const auth0Token = useAuth0Token();
+    const query = useQuery(["order", id], () =>
+        flowersApiClient!.getOrder(auth0Token!, id!),
+        {
+            enabled: !!flowersApiClient && !!auth0Token && !!id,
+        }
+    )
+    return query.data?.data.data
+}
