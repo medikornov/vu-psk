@@ -216,4 +216,12 @@ export default class FlowersApiClient {
         });
     }
 
+    public async getOrder(token: string, id: string) {
+        return axios.get<ApiResponse<Order>>(this.baseUrl + "/api/orders/" + id, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+
 }

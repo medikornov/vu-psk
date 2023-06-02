@@ -1,7 +1,7 @@
 import React, { Suspense, useState } from "react";
 import { Header } from "../components/header/Header";
 import { OrderItem } from "../clients/FlowersApiClient";
-import { useCurrentOrder, useDeleteOrder, useDeleteOrderItem, useOrderCreation, useOrderItems, useOrderItemsById, useOrderItemsQuery, useUpdateOrder, useUpdateOrderItem } from "../clients/hook";
+import { useCurrentOrder, useDeleteOrder, useDeleteOrderItem, useOrderById, useOrderCreation, useOrderItems, useOrderItemsById, useOrderItemsQuery, useUpdateOrder, useUpdateOrderItem } from "../clients/hook";
 import "./CartPage.scss";
 import { Button } from "../components/buttons/Button";
 import { Spinner } from "react-bootstrap";
@@ -56,19 +56,41 @@ const OrderItemCard = ({ orderItem: initialOrderItem }: { orderItem: OrderItem; 
 };
 
 export const OrderItems = ({ id }: { id?: string; }) => {
-    const orderItems = useOrderItemsById(id).data?.data ?? [];
+    const orderItems = useOrderItemsById(id, true).data?.data ?? [];
+    const order = useOrderById(id);
+    const price = orderItems.reduce((acc, orderItem) => acc + orderItem.item.price * orderItem.quantity, 0);
+
     return <>{
         orderItems.map((orderItem: OrderItem) => {
             return <OrderItemCard orderItem={orderItem} />;
         })
-    }</>;
+    }
+        <div style={{
+            color: "white",
+            width: "100%",
+            fontFamily: "abel",
+            paddingTop: 20,
+            paddingLeft: 10,
+            fontSize: 20
+        }}>
+            <div>Price: {price}$</div>
+            <div>
+                Contact information
+            </div>
+            <div style={{paddingLeft: 35}}>
+                Address: {order?.address ?? ""}
+            </div>
+            <div style={{paddingLeft: 35}}>
+                Number: {order?.phone ?? ""}
+            </div>
+        </div >
+    </>;
 };
 
 export const OrderDetailsPage = () => {
     // get id from url
     const { id } = useParams();
     const orderItems = useOrderItemsById(id).data?.data ?? [];
-    const price = orderItems.reduce((acc, orderItem) => acc + orderItem.item.price * orderItem.quantity, 0);
 
     return (
         <div className='global'>
