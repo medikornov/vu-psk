@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useAuth0Token } from "../../clients/hook";
 import jwtDecode from "jwt-decode";
+import axios from "axios";
 
 const AuthButton = () => {
     const auth = useAuth0();
@@ -16,7 +17,7 @@ const AuthButton = () => {
     if (auth.isAuthenticated)
         return (
             <>
-                <Button text={"Logout"} className="btn-log" onClick={() => auth.logout({ openUrl: false })} />
+                <Button text={"Logout"} className="btn-log" onClick={() => auth.logout()} />
                 <div className="user-text">
                     {auth.user?.nickname}
                 </div>
@@ -46,11 +47,13 @@ export const Header = () => {
                     <Button text={"All Flowers"} onClick={() => navigate({ pathname: "/all-flowers" })} />}
                 {auth.isAuthenticated && !hasAdminAccess &&
                     <Button text={"My Orders"} onClick={() => navigate({ pathname: "/my-orders" })} />}
+                {auth.isAuthenticated && hasAdminAccess &&
+                    <Button text={"All Orders"} onClick={() => navigate({ pathname: "/all-orders" })} />}
                 <Button text={"About Us"} onClick={() => navigate({ pathname: "/about" })} />
                 <AuthButton />
             </div>
             <div className="header-cart">
-                <CartButton />
+                {auth.isAuthenticated && !hasAdminAccess && <CartButton />}
             </div>
         </div>
     );

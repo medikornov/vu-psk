@@ -1,19 +1,20 @@
 import React from "react";
 import { Header } from "../components/header/Header";
-import { useMyOrders } from "../clients/hook";
+import { useAllOrders, useMyOrders } from "../clients/hook";
 import './MyOrdersPage.scss';
 import { ToastMessage } from "../components/toasts/Toast";
+import { useNavigate } from "react-router-dom";
 
-export const MyOrdersPage = () => {
-    const myOrders = useMyOrders();
-
+export const AllOrdersPage = () => {
+    const myOrders = useAllOrders();
+    const navigate = useNavigate();
     return (
         <div className='global'>
             <div className="myorders-page">
                 <Header />
                 <div className="myorders-body">
                     <div className="myorders-body-text">
-                        <div className="myorders-body-text-title">My Orders</div>
+                        <div className="myorders-body-text-title">All Orders</div>
                         <table className="myorders-page-orders">
                             <thead>
                                 <tr>
@@ -30,7 +31,9 @@ export const MyOrdersPage = () => {
                                     return new Date(b.creationTime).getTime() - new Date(a.creationTime).getTime();
                                 }).map(order => (
                                     <tr key={order.orderId}>
-                                        <td>{order.orderId}</td>
+                                        <td style={{ cursor: "pointer" }} onClick={() => {
+                                            navigate(`/order/${order.orderId}`);
+                                        }}>{order.orderId}</td>
                                         <td>{new Date(order.creationTime).toDateString()}</td>
                                         <td>{order.orderTotal}</td>
                                         <td>{order.status}</td>

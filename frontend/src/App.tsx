@@ -17,6 +17,8 @@ import { AllFlowersPage } from "./pages/AllFlowersPage";
 import { MyOrdersPage } from "./pages/MyOrdersPage";
 import { OrderSuccess } from "./pages/OrderSuccess";
 import { UpdateFlowerPage } from "./pages/UpdateFlowerPage";
+import { AllOrdersPage } from "./pages/AllOrdersPage";
+import { OrderDetailsPage } from "./pages/OrderDetails";
 
 const domain = process.env.AUTHZERO_DOMAIN ?? "";
 const clientId = process.env.AUTHZERO_CLIENTID ?? "";
@@ -60,6 +62,8 @@ export const App = () => {
                         <Route path="/all-flowers/:id" element={<UpdateFlowerPage />} />
                         <Route path="/my-orders" element={<MyOrdersPage />} />
                         <Route path="/order-success" element={<OrderSuccess />} />
+                        <Route path="/all-orders" element={<AllOrdersPage />} />
+                        <Route path="/order/:id" element={<OrderDetailsPage />} />
                      </Routes>
                   </BrowserRouter>
                </UserManagementProvider>

@@ -1,7 +1,7 @@
 import React, { Suspense, useState } from "react";
 import { Header } from "../components/header/Header";
 import { OrderItem } from "../clients/FlowersApiClient";
-import { useCurrentOrder, useDeleteOrder, useDeleteOrderItem, useOrderItems, useOrderItemsQuery, useUpdateOrder, useUpdateOrderItem } from "../clients/hook";
+import { useCurrentOrder, useDeleteOrder, useDeleteOrderItem, useOrderCreation, useOrderItems, useOrderItemsQuery, useUpdateOrder, useUpdateOrderItem } from "../clients/hook";
 import "./CartPage.scss";
 import { Button } from "../components/buttons/Button";
 import { Spinner } from "react-bootstrap";
@@ -26,11 +26,13 @@ const OrderItemCard = ({ orderItem: initialOrderItem }: { orderItem: OrderItem; 
                 onSuccess: () => orderItemsQuery.refetch()
             });
         } else {
-            const newItem: OrderItem = { ...orderItem, quantity: orderItem.quantity - 1 };
-            setOrderItem(newItem);
-            updateOrder.mutate(newItem, {
-                onSuccess: () => orderItemsQuery.refetch()
-            });
+            if (orderItem.quantity !== 0) {
+                const newItem: OrderItem = { ...orderItem, quantity: orderItem.quantity - 1 };
+                setOrderItem(newItem);
+                updateOrder.mutate(newItem, {
+                    onSuccess: () => orderItemsQuery.refetch()
+                });
+            }
         }
     };
 
@@ -78,7 +80,14 @@ export const CartPage = () => {
     const currentOrder = useCurrentOrder();
     const deleteOrder = useDeleteOrder();
     const updateOrder = useUpdateOrder();
-    const orderItems = useOrderItems();
+    const orderItems = useOrderItems(false);
+    const orderItemsQuery = useOrderItemsQuery(false);
+    const createEmptyOrder = useOrderCreation();
+
+    const price = orderItems.reduce((acc, orderItem) => acc + orderItem.item.price * orderItem.quantity, 0);
+
+    const [number, setNumber] = useState<string>("");
+    const [address, setAddress] = useState<string>("");
 
     return (
         <div className='global'>
@@ -96,31 +105,55 @@ export const CartPage = () => {
                         <OrderItems />
                     </Suspense>
                 </div>
-                {orderItems.length === 0 ?
-                    <div className="flowers-cart-page-body-title" style={{ paddingLeft: 50 }}>
-                        Your cart is empty
-                    </div>
-                    :
-                    <div className="buttons-container">
-                        {currentOrder && <>
-                            <Button text={"Cancel"}
-                                className="btn-add-to-cart"
-                                disabled={deleteOrder.isLoading}
-                                onClick={() => {
-                                    // not working
-                                    deleteOrder.mutate(currentOrder!.orderId, {
-                                        onSuccess: () => { }
-                                    });
+                {orderItemsQuery.isFetched && (
+                    orderItems.length === 0 ?
+                        <div className="flowers-cart-page-body-title" style={{ paddingLeft: 50 }}>
+                            Your cart is empty
+                        </div>
+                        :
+                        <div>
+                            <div>
+                                <label className="flowers-cart-page-input-label">Contact phone number:</label>
+                                <input type="text" placeholder={"+37061234560"} className="flowers-cart-page-input" onChange={(e) => {
+                                    setNumber(e.target.value);
                                 }} />
-                            <Button text={"Order"}
-                                className="btn-add-to-cart"
-                                disabled={updateOrder.isLoading}
-                                onClick={() => {
-                                    updateOrder.mutate({ ...currentOrder, status: "InProgress" });
+                                <label className="flowers-cart-page-input-label">Address:</label>
+                                <input type="text" placeholder={"Vilnius, Gedimino pr. 1"} className="flowers-cart-page-input" onChange={(e) => {
+                                    setAddress(e.target.value);
                                 }} />
-                        </>}
-                    </div>
-                }
+                            </div>
+                            <div style={{ display: "flex", marginLeft: -54, paddingTop: 10 }}>
+                                <span className="flowers-cart-page-body-all-price">Price: {price}$</span>
+                                <div className="buttons-container">
+                                    {currentOrder && <>
+                                        <Button text={"Cancel"}
+                                            className="btn-add-to-cart"
+                                            disabled={deleteOrder.isLoading}
+                                            onClick={() => {
+                                                // not working
+                                                deleteOrder.mutate(currentOrder!.orderId, {
+                                                    onSuccess: () => {
+                                                        createEmptyOrder.refetch();
+                                                    }
+                                                });
+                                            }} />
+                                        <Button text={"Order"}
+                                            className="btn-add-to-cart"
+                                            disabled={number.length === 0 || address.length === 0 || updateOrder.isLoading}
+                                            onClick={() => {
+                                                updateOrder.mutate({
+                                                    ...currentOrder,
+                                                    status: "InProgress",
+                                                    orderTotal: price,
+                                                    address,
+                                                    phone: number
+                                                });
+                                            }} />
+                                    </>}
+                                </div>
+                            </div>
+                        </div>
+                )}
                 <ToastMessage />
             </div>
         </div>

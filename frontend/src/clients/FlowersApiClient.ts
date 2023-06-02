@@ -32,6 +32,8 @@ export interface Order {
     creationTime: string;
     status: string;
     orderTotal: number;
+    phone?: string,
+    address?: string;
 }
 
 export interface OrderItem {
@@ -76,7 +78,7 @@ export interface UpdateItem {
     photo?: File;
     weight: number;
     version: string;
-    isOverride: boolean
+    isOverride: boolean;
 }
 
 const baseUrl = process.env.FLOWERSAPI_BASEURL;
@@ -102,6 +104,15 @@ export default class FlowersApiClient {
 
     public async getItem(id: string) {
         return axios.get<ApiResponse<Item>>(this.baseUrl + "/api/items/" + id);
+    }
+
+    // delete item
+    public async deleteItem(token: string, id: string) {
+        return axios.delete(this.baseUrl + "/api/items/" + id, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
     }
 
     public async getCustomerByAuth0Id(token: string, auth0id: string) {
@@ -193,7 +204,16 @@ export default class FlowersApiClient {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "multipart/form-data; boundary=----",
             }
-        })
+        });
+    }
+
+    // get all orders
+    public async getAllOrders(token: string) {
+        return axios.get<ApiResponse<Order[]>>(this.baseUrl + "/api/orders", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
     }
 
 }
